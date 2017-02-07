@@ -4,6 +4,9 @@ In order to start a container you just need `./run.sh`
 
 Jupyter notebook config file is located in `./config` directory. You might want to change config, at least password to access the notebook.
 
+**Prerequisites**
+
+You need [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) installed.
 
 ## Settings
 
@@ -30,7 +33,7 @@ default: `8888`
 Host port where jupyter notebook is listening.
 
 ### DS_IMAGE
-default: `rhudor/ds-py3`
+default: `rhudor/ds-py3:gpu`
 
 Docker image to run in a container.
 

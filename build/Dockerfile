@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
 MAINTAINER Roman Kh <rhudor@gmail.com>
 
 # installing system packages
@@ -84,7 +84,10 @@ RUN apt-get install -y graphviz && \
     cd opencv && \
     mkdir build && \
     cd build && \
-    cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D ENABLE_FAST_MATH=1 ../../opencv && \
+    cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local \
+          -D CUDA_ARCH_BIN:STRING="3.0 3.5 5.0 5.2 6.0 6.1" \
+          -D CUDA_ARCH_PTX:STRING="3.0 3.5 5.0 5.2 6.0 6.1" \
+          -D WITH_CUBLAS=1 -D ENABLE_FAST_MATH=1 -D CUDA_FAST_MATH=1 ../../opencv && \
     make -j$(nproc) && \
     make install && \
     cd /install && \
@@ -95,7 +98,7 @@ RUN apt-get install -y graphviz && \
     pip3 install pydicom
 
 # installing deep learning libraries
-RUN pip3 install tensorflow && \
+RUN pip3 install tensorflow-gpu && \
     pip3 install keras && \
     pip3 install edward && \
     git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
@@ -104,7 +107,21 @@ RUN pip3 install tensorflow && \
     echo 'USE_BLAS=openblas\n\
     ADD_CFLAGS += -I/usr/include/openblas\n\
     ADD_LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_imgcodecs\n\
+    USE_CUDA=1\n\
+    USE_CUDA_PATH=/usr/local/cuda\n\
+    USE_CUDNN=1\n\
+    CUDA_ARCH := -gencode arch=compute_30,code=sm_30\\\n\
+                 -gencode arch=compute_35,code=sm_35\\\n\
+                 -gencode arch=compute_50,code=sm_50\\\n\
+                 -gencode arch=compute_50,code=compute_50\\\n\
+                 -gencode arch=compute_52,code=sm_52\\\n\
+                 -gencode arch=compute_52,code=compute_52\\\n\
+                 -gencode arch=compute_60,code=sm_60\\\n\
+                 -gencode arch=compute_60,code=compute_60\\\n\
+                 -gencode arch=compute_61,code=sm_61\\\n\
+                 -gencode arch=compute_61,code=compute_61\\\n\
     ' >> config.mk && \
+    echo '\nMSHADOW_CFLAGS += -DMSHADOW_USE_PASCAL=1' >> mshadow/make/mshadow.mk && \
     make -j$(nproc) && \
     cd python && \
     python3 setup.py install && \
@@ -145,3 +162,4 @@ WORKDIR /notebooks
 
 ENTRYPOINT ["/bin/sh", "-c"]
 CMD ["start-notebook.sh"]
+
