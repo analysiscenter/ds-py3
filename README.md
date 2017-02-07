@@ -1,2 +1,1 @@
-# DS-docker
-Docker containers for data science
+# Docker containers with python 3 environment for data science
