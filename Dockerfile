@@ -3,7 +3,7 @@ MAINTAINER Roman Kh <rhudor@gmail.com>
 
 # installing system packages
 RUN apt-get update && \
-    apt-get install -y pkg-config build-essential cmake gfortran \
+    apt-get install -y pkg-config software-properties-common build-essential cmake gfortran \
         liblapack-dev libatlas-base-dev libopenblas-dev \
         zlib1g-dev liblzma-dev liblz4-dev libzstd-dev zip p7zip-full \
         libhdf5-dev libedit-dev \
@@ -23,7 +23,11 @@ RUN pip3 install --upgrade pip && \
     pip3 install aiofiles
 
 # installing LLVM
-RUN apt-get install -y llvm && \
+RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
+    apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-3.9 main" && \
+    apt-get update && \
+    apt-get install -y llvm-3.9 && \
+    ln -s /usr/bin/llvm-config-3.9 /usr/bin/llvm-config && \
     pip3 install llvmlite && \
     pip3 install numba
 
@@ -57,8 +61,8 @@ RUN git clone --recursive https://github.com/dmlc/xgboost && \
     cd build && \
     cmake .. && \
     make -j$(nproc) && \
-    cd python-package && \
-    python3 setup.py install
+    cd ../python-package && \
+    python3 setup.py install && \
     cd /install && \
     rm -r LightGBM
 
@@ -113,8 +117,6 @@ RUN pip3 install seaborn && \
     pip3 install ggplot && \
     pip3 install bokeh && \
     pip3 install folium && \
-    pip3 uninstall pillow && \
-    CC="cc -mavx2" pip3 install -U --force-reinstall pillow-simd && \
     pip3 install tqdm
 
 # instaling jupyter
@@ -125,7 +127,10 @@ RUN pip3 install jupyter && \
     pip3 install ipyvolume && \
     jupyter nbextension enable --py --sys-prefix ipyvolume && \
     pip3 install jupyterhub
-COPY jupyter_notebook_config.py /root/.jupyter/
+
+# install forked libraries
+RUN pip3 uninstall -y pillow && \
+    CC="cc -mavx2" pip3 install -U --force-reinstall pillow-simd
 
 # install docker
 RUN wget https://get.docker.com -q -O /tmp/getdocker && \
@@ -134,6 +139,7 @@ RUN wget https://get.docker.com -q -O /tmp/getdocker && \
 
 COPY start-notebook.sh /usr/local/bin/start-notebook.sh
 COPY start-singleuser.sh /usr/local/bin/start-singleuser.sh
+COPY jupyter_notebook_config.py /root/.jupyter/
 
 WORKDIR /notebooks
 
