@@ -5,7 +5,7 @@ MAINTAINER Roman Kh <rhudor@gmail.com>
 RUN apt-get update && \
     apt-get install -y pkg-config build-essential cmake gfortran \
         liblapack-dev libatlas-base-dev libopenblas-dev \
-        zlib1g-dev liblzma-dev liblz4-dev libzstd-dev zip p7zip-rar p7zip-full \
+        zlib1g-dev liblzma-dev liblz4-dev libzstd-dev zip p7zip-full \
         libhdf5-dev libedit-dev \
         libzmq-dev \
         git wget tmux sysstat \
