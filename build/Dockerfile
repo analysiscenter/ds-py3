@@ -157,9 +157,9 @@ RUN wget https://get.docker.com -q -O /tmp/getdocker && \
 
 COPY start-notebook.sh /usr/local/bin/start-notebook.sh
 COPY start-singleuser.sh /usr/local/bin/start-singleuser.sh
+COPY jupyter_notebook_config.py /root/.jupyter/
 
 WORKDIR /notebooks
 
 ENTRYPOINT ["/bin/sh", "-c"]
 CMD ["start-notebook.sh"]
-
