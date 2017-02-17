@@ -5,10 +5,10 @@ MAINTAINER Roman Kh <rhudor@gmail.com>
 RUN apt-get update && \
     apt-get install -y pkg-config build-essential cmake gfortran \
         liblapack-dev libatlas-base-dev libopenblas-dev \
-        zlib1g-dev liblzma-dev liblz4-dev libzstd-dev \
+        zlib1g-dev liblzma-dev liblz4-dev libzstd-dev zip p7zip-rar p7zip-full \
         libhdf5-dev libedit-dev \
         libzmq-dev \
-        git wget \
+        git wget tmux sysstat \
         python3-pip python3-dev pylint3
 
 # installing python packages
@@ -41,15 +41,26 @@ RUN pip3 install scipy && \
     pip3 install pyflux && \
     pip3 install nltk
 
-# installing XGBoost
+# installing XGBoost and LightGBM
 WORKDIR /install/xgboost
 RUN git clone --recursive https://github.com/dmlc/xgboost && \
     cd xgboost && \
-    make -j4 && \
+    make -j$(nproc) && \
     cd python-package && \
     python3 setup.py install && \
     cd /install && \
-    rm -r xgboost
+    rm -r xgboost && \
+# installing LightGBM
+    git clone --recursive https://github.com/Microsoft/LightGBM && \
+    cd LightGBM && \
+    mkdir build && \
+    cd build && \
+    cmake .. && \
+    make -j$(nproc) && \
+    cd python-package && \
+    python3 setup.py install
+    cd /install && \
+    rm -r LightGBM
 
 # installing Google OrTools
 WORKDIR /install/ortools
@@ -70,11 +81,10 @@ RUN apt-get install -y graphviz && \
     mkdir build && \
     cd build && \
     cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D ENABLE_FAST_MATH=1 ../../opencv && \
-    make -j4 && \
+    make -j$(nproc) && \
     make install && \
     cd /install && \
     rm -r opencv && \
-    pip3 install pillow && \
     pip3 install matplotlib && \
     pip3 install SimpleITK && \
     pip3 install scikit-image && \
@@ -84,6 +94,7 @@ RUN apt-get install -y graphviz && \
 RUN pip3 install tensorflow && \
     pip3 install prettytensor && \
     pip3 install keras && \
+    pip3 install edward && \
     git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
     cd /install/mxnet && \
     cp make/config.mk . && \
@@ -101,13 +112,18 @@ RUN pip3 install tensorflow && \
 RUN pip3 install seaborn && \
     pip3 install ggplot && \
     pip3 install bokeh && \
-    pip3 install folium
+    pip3 install folium && \
+    pip3 uninstall pillow && \
+    CC="cc -mavx2" pip3 install -U --force-reinstall pillow-simd && \
+    pip3 install tqdm
 
 # instaling jupyter
 RUN pip3 install jupyter && \
     pip3 install jupyter_contrib_nbextensions && \
     jupyter contrib nbextension install --user && \
     jupyter nbextension enable --py widgetsnbextension && \
+    pip3 install ipyvolume && \
+    jupyter nbextension enable --py --sys-prefix ipyvolume && \
     pip3 install jupyterhub
 COPY jupyter_notebook_config.py /root/.jupyter/
 
