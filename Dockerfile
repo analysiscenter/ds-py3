@@ -102,9 +102,10 @@ RUN pip3 install tensorflow && \
     git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
     cd /install/mxnet && \
     cp make/config.mk . && \
-    echo "USE_BLAS=openblas" >>config.mk && \
-    echo "ADD_CFLAGS += -I/usr/include/openblas" >>config.mk && \
-    echo "ADD_LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_imgcodecs" >>config.mk && \
+    echo 'USE_BLAS=openblas\n\
+    ADD_CFLAGS += -I/usr/include/openblas\n\
+    ADD_LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_imgcodecs\n\
+    ' >> config.mk && \
     make -j$(nproc) && \
     cd python && \
     python3 setup.py install && \
