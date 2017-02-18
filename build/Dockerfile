@@ -100,8 +100,8 @@ RUN apt-get install -y graphviz && \
 # installing deep learning libraries
 RUN pip3 install tensorflow-gpu && \
     pip3 install keras && \
-    pip3 install edward && \
-    git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
+    pip3 install edward
+RUN git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
     cd /install/mxnet && \
     cp make/config.mk . && \
     echo 'USE_BLAS=openblas\n\
