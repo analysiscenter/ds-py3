@@ -11,22 +11,27 @@ Before running a container you might set some env variables:
 
 ### DS_NOTEBOOKS_DIR
 default: `./notebooks`
+
 Directory in the host system which is mapped to a container `/notebooks` directory where all the notebooks are stored
 
 ### DS_CONFIG_DIR
 default: `./config`
+
 Directory in the host system where `jupyter_notebook_config.py` is stored. It is mapped to `/jupyter/config` directory in the container.
 
 ### DS_SECRET_DIR
 default: `./secret`
+
 Directory in the host system where TLS certs are stored. It is mapped to `/jupyter/secret` directory in the container.
 
 ### DS_PORT
 default: `8888`
+
 Host port where jupyter notebook is listening.
 
 ### DS_IMAGE
 default: `rhudor/ds-py3`
+
 Docker image to run in a container.
 
 ## Examples
