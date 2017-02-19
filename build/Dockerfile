@@ -96,7 +96,6 @@ RUN apt-get install -y graphviz && \
 
 # installing deep learning libraries
 RUN pip3 install tensorflow && \
-    pip3 install prettytensor && \
     pip3 install keras && \
     pip3 install edward && \
     git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
@@ -121,12 +120,13 @@ RUN pip3 install seaborn && \
     pip3 install tqdm
 
 # instaling jupyter
+VOLUME /jupyter/config /jupyter/secret /notebooks
 RUN pip3 install jupyter && \
     pip3 install jupyter_contrib_nbextensions && \
-    jupyter contrib nbextension install --user && \
+    jupyter contrib nbextension install --system && \
     jupyter nbextension enable --py widgetsnbextension && \
     pip3 install ipyvolume && \
-    jupyter nbextension enable --py --sys-prefix ipyvolume && \
+    jupyter nbextension enable --py --system ipyvolume && \
     pip3 install jupyterhub
 
 # install forked libraries
@@ -140,7 +140,6 @@ RUN wget https://get.docker.com -q -O /tmp/getdocker && \
 
 COPY start-notebook.sh /usr/local/bin/start-notebook.sh
 COPY start-singleuser.sh /usr/local/bin/start-singleuser.sh
-COPY jupyter_notebook_config.py /root/.jupyter/
 
 WORKDIR /notebooks
 
