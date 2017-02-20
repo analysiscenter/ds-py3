@@ -8,7 +8,7 @@ RUN apt-get update && \
         zlib1g-dev liblzma-dev liblz4-dev libzstd-dev zip p7zip-full \
         libhdf5-dev libedit-dev \
         libzmq-dev \
-        git wget tmux sysstat \
+        git wget tmux nano sysstat \
         python3-pip python3-dev pylint3
 
 # installing python packages
