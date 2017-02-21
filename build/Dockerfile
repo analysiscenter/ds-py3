@@ -137,7 +137,8 @@ RUN pip3 install seaborn && \
     pip3 install tqdm
 
 # instaling jupyter
-VOLUME /jupyter/config /jupyter/secret /notebooks
+WORKDIR /jupyter/config
+WORKDIR /jupyter/secret
 RUN pip3 install jupyter && \
     pip3 install jupyter_contrib_nbextensions && \
     jupyter contrib nbextension install --system && \
