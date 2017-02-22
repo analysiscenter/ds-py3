@@ -121,6 +121,7 @@ RUN git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
                  -gencode arch=compute_61,code=sm_61\\\n\
                  -gencode arch=compute_61,code=compute_61\\\n\
     ' >> config.mk && \
+    grep -v MSHADOW_USE_PASCAL=0 mshadow/make/mshadow.mk > mshadow/make/mshadow.mk && \
     echo '\nMSHADOW_CFLAGS += -DMSHADOW_USE_PASCAL=1' >> mshadow/make/mshadow.mk && \
     make -j$(nproc) && \
     cd python && \
