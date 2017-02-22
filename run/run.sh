@@ -6,7 +6,7 @@ notebooks_vol=${DS_NOTEBOOKS_DIR:-`pwd`/notebooks}
 config_vol=${DS_CONFIG_DIR:-`pwd`/config}
 secret_vol=${DS_SECRET_DIR:-`pwd`/secret}
 port=${DS_PORT:-8888}
-image=${DS_IMAGE:-rhudor/ds-py3:gpu}
+image=${DS_IMAGE:-analysiscenter1/ds-py3:gpu}
 
 
 sudo nvidia-docker run -p ${port}:8888 \
