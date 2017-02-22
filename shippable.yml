@@ -12,7 +12,7 @@ build:
 
 integrations:
   hub:
-    - integrationName: DockerHub rhudor
+    - integrationName: DockerHub analysiscenter.ru
       type: docker
 
   notifications:
