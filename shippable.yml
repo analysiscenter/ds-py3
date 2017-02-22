@@ -2,11 +2,12 @@ language: none
 
 build:
   ci:
-    - docker build -t ds-py3 build
-  post_ci:
     - TAG=:$BRANCH
     - if [ "$BRANCH" == "master" ]; then TAG=""; fi
-    - IMAGE_NAME=rhudor/ds-py3$TAG
+    - IMAGE_NAME=analysiscenter1/ds-py3$TAG
+    - docker pull $IMAGE_NAME
+    - docker build -t ds-py3 build
+  post_ci:
     - docker tag ds-py3 $IMAGE_NAME
     - docker push $IMAGE_NAME
 
