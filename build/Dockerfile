@@ -121,8 +121,10 @@ RUN git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
                  -gencode arch=compute_61,code=sm_61\\\n\
                  -gencode arch=compute_61,code=compute_61\\\n\
     ' >> config.mk && \
-    grep -v MSHADOW_USE_PASCAL=0 mshadow/make/mshadow.mk > mshadow/make/mshadow.mk && \
+    cp mshadow/make/mshadow.mk /tmp/mshadow.mk && \
+    grep -v MSHADOW_USE_PASCAL=0 /tmp/mshadow.mk > mshadow/make/mshadow.mk && \
     echo '\nMSHADOW_CFLAGS += -DMSHADOW_USE_PASCAL=1' >> mshadow/make/mshadow.mk && \
+    rm /tmp/mshadow.mk && \
     make -j$(nproc) && \
     cd python && \
     python3 setup.py install && \
@@ -143,9 +145,7 @@ WORKDIR /jupyter/secret
 RUN pip3 install jupyter && \
     pip3 install jupyter_contrib_nbextensions && \
     jupyter contrib nbextension install --system && \
-    jupyter nbextension enable --py widgetsnbextension && \
     pip3 install ipyvolume && \
-    jupyter nbextension enable --py --system ipyvolume && \
     pip3 install jupyterhub
 
 # install forked libraries
