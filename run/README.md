@@ -33,7 +33,7 @@ default: `8888`
 Host port where jupyter notebook is listening.
 
 ### DS_IMAGE
-default: `rhudor/ds-py3`
+default: `analysiscenter1/ds-py3`
 
 Docker image to run in a container.
 
