@@ -125,9 +125,7 @@ WORKDIR /jupyter/secret
 RUN pip3 install jupyter && \
     pip3 install jupyter_contrib_nbextensions && \
     jupyter contrib nbextension install --system && \
-    jupyter nbextension enable --py widgetsnbextension && \
     pip3 install ipyvolume && \
-    jupyter nbextension enable --py --system ipyvolume && \
     pip3 install jupyterhub
 
 # install forked libraries
