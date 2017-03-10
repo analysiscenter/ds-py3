@@ -5,4 +5,4 @@
 ## How to run a data science container
 See [run/README.md](run/README.md)
 
-## For a GPU container switch to [GPU branch](/analysiscenter/ds-py3/tree/gpu)
+## For a GPU container switch to GPU branch
