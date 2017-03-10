@@ -8,11 +8,13 @@ env:
 
 build:
   ci:
-    - IMAGE_NAME=$DOCKER_ACC/$DOCKER_REPO:$TAG
-    - docker pull $IMAGE_NAME
-    - docker build -t $IMAGE_NAME build
-  post_ci:
-    - docker push $IMAGE_NAME
+    - >
+      if [ $(git diff-tree --no-commit-id --name-only -r HEAD~1 | grep Dockerfile | wc -c) -ne 0 ] ; then
+         IMAGE_NAME=$DOCKER_ACC/$DOCKER_REPO:$TAG;
+         docker pull $IMAGE_NAME;
+         docker build -t $IMAGE_NAME build;
+         docker push $IMAGE_NAME
+      fi;
 
 integrations:
   hub:
