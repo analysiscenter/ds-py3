@@ -18,8 +18,8 @@ RUN pip3 install --upgrade pip && \
     pip3 install fastcache && \
     pip3 install pytest && \
     pip3 install nose && \
-    pip3 install blosc && \
     pip3 install python-snappy && \
+    pip3 install blosc && \
     pip3 install numpy && \
     pip3 install bottleneck && \
     pip3 install numexpr && \
@@ -28,7 +28,7 @@ RUN pip3 install --upgrade pip && \
 
 # installing LLVM
 RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
-    apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-3.9 main" && \
+    apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-4.0 main" && \
     apt-get update && \
     apt-get install -y llvm-4.0 && \
     ln -s /usr/bin/llvm-config-4.0 /usr/bin/llvm-config && \
@@ -149,6 +149,8 @@ RUN pip3 install seaborn && \
     pip3 install ggplot && \
     pip3 install bokeh && \
     pip3 install folium && \
+    pip3 install picasso-viz && \
+    pip3 install vizpy && \
     pip3 install tqdm
 
 # instaling jupyter
