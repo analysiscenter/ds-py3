@@ -104,7 +104,7 @@ RUN apt-get install -y graphviz && \
 RUN pip3 install SimpleITK && \
     pip3 install pydicom && \
     pip3 install wfdb && \
-    pip3 install PyWavelets && \
+    pip3 install PyWavelets
 
 # installing deep learning libraries
 RUN pip3 install tensorflow && \
