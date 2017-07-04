@@ -5,17 +5,21 @@ MAINTAINER Roman Kh <rhudor@gmail.com>
 RUN apt-get update && \
     apt-get install -y pkg-config software-properties-common build-essential cmake gfortran \
         liblapack-dev libatlas-base-dev libopenblas-dev \
-        zlib1g-dev liblzma-dev liblz4-dev libzstd-dev zip p7zip-full \
+        zlib1g-dev liblzma-dev liblz4-dev libzstd-dev libsnappy-dev zip p7zip-full \
         libhdf5-dev libedit-dev \
         libzmq-dev \
-        git wget tmux nano sysstat \
+        git wget tmux nano sysstat htop mc \
         python3-pip python3-dev pylint3
 
 # installing python packages
 RUN pip3 install --upgrade pip && \
     pip3 install setuptools --upgrade && \
     pip3 install cython && \
+    pip3 install fastcache && \
+    pip3 install pytest && \
+    pip3 install nose && \
     pip3 install blosc && \
+    pip3 install python-snappy && \
     pip3 install numpy && \
     pip3 install bottleneck && \
     pip3 install numexpr && \
@@ -26,15 +30,18 @@ RUN pip3 install --upgrade pip && \
 RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
     apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-3.9 main" && \
     apt-get update && \
-    apt-get install -y llvm-3.9 && \
-    ln -s /usr/bin/llvm-config-3.9 /usr/bin/llvm-config && \
+    apt-get install -y llvm-4.0 && \
+    ln -s /usr/bin/llvm-config-4.0 /usr/bin/llvm-config && \
     pip3 install llvmlite && \
     pip3 install numba
 
 # installing data manipulation packages
 RUN pip3 install tables && \
+    pip3 install h5py && \
     pip3 install pandas && \
     pip3 install feather-format && \
+    pip3 install fastparquet && \
+    pip3 install dask && \
     pip3 install python-dateutil
 
 # installing stats and ML libraries
@@ -43,7 +50,8 @@ RUN pip3 install scipy && \
     pip3 install sklearn-pandas && \
     pip3 install statsmodels && \
     pip3 install pyflux && \
-    pip3 install nltk
+    pip3 install nltk && \
+    pip3 install hmmlearn
 
 # installing XGBoost and LightGBM
 WORKDIR /install/xgboost
@@ -93,13 +101,17 @@ RUN apt-get install -y graphviz && \
     cd /install && \
     rm -r opencv && \
     pip3 install matplotlib && \
-    pip3 install SimpleITK && \
-    pip3 install scikit-image && \
-    pip3 install pydicom
+    pip3 install scikit-image
+
+# installing special packages
+RUN pip3 install SimpleITK && \
+    pip3 install pydicom && \
+    pip3 install wfdb && \
+    pip3 install PyWavelets && \
 
 # installing deep learning libraries
 RUN pip3 install tensorflow-gpu && \
-    pip3 install keras && \
+    pip3 install --no-deps keras && \
     pip3 install --no-deps edward
 RUN git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
     cd /install/mxnet && \
