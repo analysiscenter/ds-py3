@@ -130,7 +130,7 @@ RUN pip3 install seaborn && \
     pip3 install bokeh && \
     pip3 install folium && \
     pip3 install picasso-viz && \
-    pip3 install vizpy && \
+    pip3 install vispy && \
     pip3 install tqdm
 
 # instaling jupyter
