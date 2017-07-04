@@ -108,7 +108,7 @@ RUN pip3 install SimpleITK && \
 
 # installing deep learning libraries
 RUN pip3 install tensorflow && \
-    pip3 install --nodeps keras && \
+    pip3 install --no-deps keras && \
     pip3 install edward && \
     git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
     cd /install/mxnet && \
