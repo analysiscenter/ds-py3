@@ -169,7 +169,7 @@ RUN pip3 uninstall -y pillow && \
     CC="cc -mavx2" pip3 install -U --force-reinstall pillow-simd
 
 # Reinstall tensorflow
-RUN pip3 uninstall tensorflow-gpu && \
+RUN pip3 uninstall -y tensorflow-gpu && \
     pip3 install --no-cache-dir tensorflow-gpu
 
 # install docker
