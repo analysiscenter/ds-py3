@@ -109,6 +109,8 @@ RUN pip3 install SimpleITK && \
     pip3 install wfdb && \
     pip3 install PyWavelets
 
+# increase counter to rebuild the image if some library changes
+ENV UPDATE_DL 1
 # installing deep learning libraries
 RUN pip3 install tensorflow-gpu && \
     pip3 install --no-deps keras && \
@@ -153,7 +155,7 @@ RUN pip3 install seaborn && \
     pip3 install vispy && \
     pip3 install tqdm
 
-# instaling jupyter
+# installing jupyter
 WORKDIR /jupyter/config
 WORKDIR /jupyter/secret
 RUN pip3 install jupyter && \
@@ -166,11 +168,17 @@ RUN pip3 install jupyter && \
 RUN pip3 uninstall -y pillow && \
     CC="cc -mavx2" pip3 install -U --force-reinstall pillow-simd
 
+# Reinstall tensorflow
+RUN pip3 uninstall tensorflow-gpu && \
+    pip3 install --no-cache-dir tensorflow-gpu
+
 # install docker
 RUN wget https://get.docker.com -q -O /tmp/getdocker && \
     chmod +x /tmp/getdocker && \
     sh /tmp/getdocker
 
+# increase counter to rebuild the image if start files change
+ENV UPDATE_CMD 1
 COPY start-notebook.sh /usr/local/bin/start-notebook.sh
 COPY start-singleuser.sh /usr/local/bin/start-singleuser.sh
 
