@@ -13,7 +13,9 @@ build:
          IMAGE_NAME=$DOCKER_ACC/$DOCKER_REPO:$TAG;
          docker pull $IMAGE_NAME;
          docker build -t $IMAGE_NAME build;
-         docker push $IMAGE_NAME
+         if [ $? -eq 0 ] ; then
+            docker push $IMAGE_NAME
+         fi
       fi;
 
 integrations:
