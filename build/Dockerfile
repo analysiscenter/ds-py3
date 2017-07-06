@@ -131,13 +131,9 @@ RUN git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
     CUDA_ARCH := -gencode arch=compute_30,code=sm_30\\\n\
                  -gencode arch=compute_35,code=sm_35\\\n\
                  -gencode arch=compute_50,code=sm_50\\\n\
-                 -gencode arch=compute_50,code=compute_50\\\n\
                  -gencode arch=compute_52,code=sm_52\\\n\
-                 -gencode arch=compute_52,code=compute_52\\\n\
                  -gencode arch=compute_60,code=sm_60\\\n\
-                 -gencode arch=compute_60,code=compute_60\\\n\
                  -gencode arch=compute_61,code=sm_61\\\n\
-                 -gencode arch=compute_61,code=compute_61\\\n\
     ' >> config.mk && \
     cp mshadow/make/mshadow.mk /tmp/mshadow.mk && \
     grep -v MSHADOW_USE_PASCAL=0 /tmp/mshadow.mk > mshadow/make/mshadow.mk && \
