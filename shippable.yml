@@ -15,7 +15,7 @@ build:
          docker build -t $IMAGE_NAME build;
          if [ $? -eq 0 ] ; then
             docker push $IMAGE_NAME
-         fi
+         fi;
       fi;
 
 integrations:

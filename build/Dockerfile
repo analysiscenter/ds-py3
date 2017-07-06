@@ -16,15 +16,20 @@ RUN pip3 install --upgrade pip && \
     pip3 install setuptools --upgrade && \
     pip3 install cython && \
     pip3 install fastcache && \
-    pip3 install pytest && \
-    pip3 install nose && \
     pip3 install python-snappy && \
     pip3 install blosc && \
     pip3 install numpy && \
     pip3 install bottleneck && \
     pip3 install numexpr && \
     pip3 install virtualenv && \
-    pip3 install aiofiles
+    pip3 install aiofiles && \
+    pip3 install packaging && \
+    pip3 install click && \
+    pip3 install itsdangerous && \
+    pip3 install flask && \
+    pip3 install pytest && \
+    pip3 install nose && \
+    pip3 install pytest-flask
 
 # installing LLVM
 RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
@@ -151,7 +156,7 @@ RUN pip3 install seaborn && \
     pip3 install ggplot && \
     pip3 install bokeh && \
     pip3 install folium && \
-    pip3 install picasso-viz && \
+    pip3 install --no-deps picasso-viz && \
     pip3 install vispy && \
     pip3 install tqdm
 
@@ -167,10 +172,6 @@ RUN pip3 install jupyter && \
 # install forked libraries
 RUN pip3 uninstall -y pillow && \
     CC="cc -mavx2" pip3 install -U --force-reinstall pillow-simd
-
-# Reinstall tensorflow
-RUN pip3 uninstall -y tensorflow-gpu && \
-    pip3 install --no-cache-dir tensorflow-gpu
 
 # install docker
 RUN wget https://get.docker.com -q -O /tmp/getdocker && \
