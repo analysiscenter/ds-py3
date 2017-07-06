@@ -28,8 +28,8 @@ RUN pip3 install --upgrade pip && \
     pip3 install itsdangerous && \
     pip3 install flask && \
     pip3 install pytest && \
-    pip3 install nose && \
-    pip3 install pytest-flask
+    pip3 install pytest-flask && \
+    pip3 install tox
 
 # installing LLVM
 RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
