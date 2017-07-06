@@ -9,7 +9,7 @@ port=${DS_PORT:-8888}
 image=${DS_IMAGE:-analysiscenter1/ds-py3}
 
 
-sudo docker run -p ${port}:8888 \
+sudo docker run --rm -p ${port}:8888 \
   -v ${notebooks_vol}:/notebooks \
   -v ${config_vol}:/jupyter/config \
   -v ${secret_vol}:/jupyter/secret \
