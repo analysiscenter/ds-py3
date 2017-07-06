@@ -97,10 +97,7 @@ RUN apt-get install -y graphviz && \
     cd opencv && \
     mkdir build && \
     cd build && \
-    cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local \
-          -D CUDA_ARCH_BIN:STRING="3.0 3.5 5.0 5.2 6.0 6.1" \
-          -D CUDA_ARCH_PTX:STRING="3.0 3.5 5.0 5.2 6.0 6.1" \
-          -D WITH_CUBLAS=1 -D ENABLE_FAST_MATH=1 -D CUDA_FAST_MATH=1 ../../opencv && \
+    cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D ENABLE_FAST_MATH=1 ../../opencv && \
     make -j$(nproc) && \
     make install && \
     cd /install && \

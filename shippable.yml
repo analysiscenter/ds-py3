@@ -14,7 +14,7 @@ build:
          docker pull $IMAGE_NAME;
          docker build -t $IMAGE_NAME build;
          if [ $? -eq 0 ] ; then
-            docker push $IMAGE_NAME
+            docker push $IMAGE_NAME;
          fi;
       fi;
 
