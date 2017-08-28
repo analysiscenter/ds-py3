@@ -49,6 +49,8 @@ RUN pip3 install tables && \
     pip3 install pandas && \
     pip3 install feather-format && \
     pip3 install fastparquet && \
+    pip3 install toolz && \
+    pip3 install cloudpickle && \
     pip3 install dask && \
     pip3 install python-dateutil
 
