@@ -15,6 +15,8 @@ RUN apt-get update && \
 RUN pip3 install --upgrade pip && \
     pip3 install setuptools --upgrade && \
     pip3 install cython && \
+    pip3 install toolz && \
+    pip3 install cloudpickle && \
     pip3 install dill && \
     pip3 install fastcache && \
     pip3 install python-snappy && \
