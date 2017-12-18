@@ -15,9 +15,8 @@ RUN apt-get update && \
 RUN pip3 install --upgrade pip && \
     pip3 install setuptools --upgrade && \
     pip3 install cython && \
-    pip3 install dill && \
     pip3 install toolz && \
-    pip3 install cloudpickle && \
+    pip3 install dill && \
     pip3 install fastcache && \
     pip3 install python-snappy && \
     pip3 install blosc && \
@@ -116,7 +115,14 @@ RUN apt-get install -y graphviz && \
 RUN pip3 install SimpleITK && \
     pip3 install pydicom && \
     pip3 install wfdb && \
-    pip3 install PyWavelets
+    pip3 install PyWavelets && \
+    pip3 install pyedflib
+
+# installing deep learning libraries
+RUN pip3 install tensorflow && \
+    pip3 install --no-deps keras && \
+    pip3 install --no-deps edward && \
+    git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
 
 # increase counter to rebuild the image if some library changes
 ENV UPDATE_DL 1
@@ -178,8 +184,6 @@ RUN wget https://get.docker.com -q -O /tmp/getdocker && \
     chmod +x /tmp/getdocker && \
     sh /tmp/getdocker
 
-# increase counter to rebuild the image if start files change
-ENV UPDATE_CMD 1
 COPY start-notebook.sh /usr/local/bin/start-notebook.sh
 COPY start-singleuser.sh /usr/local/bin/start-singleuser.sh
 

@@ -4,6 +4,9 @@ In order to start a container you just need `./run.sh`
 
 Jupyter notebook config file is located in `./config` directory. You might want to change config, at least the password to access the notebook.
 
+## Prerequisites
+
+You obviously need [docker](https://docs.docker.com/engine/installation/) installed.
 
 **Prerequisites**
 
@@ -43,5 +46,4 @@ Docker image to run in a container.
 `DS_NOTEBOOKS_DIR=/notebooks ./run.sh` - to store notebooks in the host directory `/notebooks`
 
 You can pass additional docker options, for instance:
-
-`DS_PORT=8889 ./run.sh -it --rm` - to run a container interactively and to remove it when it stops
+`DS_PORT=8889 ./run.sh -it --rm` - to run a container interactively and remove it when it stops
