@@ -4,6 +4,7 @@ MAINTAINER Roman Kh <rhudor@gmail.com>
 # installing system packages
 RUN apt-get update && \
     apt-get install -y pkg-config software-properties-common build-essential cmake gfortran \
+        libboost-dev libboost-system-dev libboost-filesystem-dev \
         liblapack-dev libatlas-base-dev libopenblas-dev \
         zlib1g-dev liblzma-dev liblz4-dev libzstd-dev libsnappy-dev zip p7zip-full \
         libhdf5-dev libedit-dev \
@@ -48,8 +49,6 @@ RUN pip3 install tables && \
     pip3 install pandas && \
     pip3 install feather-format && \
     pip3 install fastparquet && \
-    pip3 install toolz && \
-    pip3 install cloudpickle && \
     pip3 install dask && \
     pip3 install python-dateutil
 
@@ -66,6 +65,7 @@ RUN pip3 install scipy && \
 WORKDIR /install/xgboost
 RUN git clone --recursive https://github.com/dmlc/xgboost && \
     cd xgboost && \
+    cmake -DUSE_CUDA=ON -DGPU_COMPUTE_VER=61 .. && \
     make -j$(nproc) && \
     cd python-package && \
     python3 setup.py install && \
@@ -76,7 +76,7 @@ RUN git clone --recursive https://github.com/dmlc/xgboost && \
     cd LightGBM && \
     mkdir build && \
     cd build && \
-    cmake .. && \
+    cmake -DUSE_GPU=1 .. && \
     make -j$(nproc) && \
     cd ../python-package && \
     python3 setup.py install && \
