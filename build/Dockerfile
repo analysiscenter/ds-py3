@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM nvidia/cuda:8.0-cudnn6-devel-ubuntu16.04
 MAINTAINER Roman Kh <rhudor@gmail.com>
 
 # installing system packages
@@ -101,7 +101,9 @@ RUN apt-get install -y graphviz && \
     cd opencv && \
     mkdir build && \
     cd build && \
-    cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D ENABLE_FAST_MATH=1 ../../opencv && \
+    cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local \
+          -D ENABLE_FAST_MATH=1 \
+          -D WITH_CUDA=OFF -D WITH_CUBLAS=0 -D CUDA_FAST_MATH=0 ../../opencv && \
     make -j$(nproc) && \
     make install && \
     cd /install && \
@@ -121,12 +123,33 @@ RUN pip3 install tensorflow && \
     pip3 install --no-deps keras && \
     pip3 install --no-deps edward && \
     git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
+
+# increase counter to rebuild the image if some library changes
+ENV UPDATE_DL 1
+# installing deep learning libraries
+RUN pip3 install tensorflow-gpu && \
+    pip3 install --no-deps keras && \
+    pip3 install --no-deps edward
+RUN git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
     cd /install/mxnet && \
     cp make/config.mk . && \
     echo 'USE_BLAS=openblas\n\
     ADD_CFLAGS += -I/usr/include/openblas\n\
     ADD_LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_imgcodecs\n\
+    USE_CUDA=1\n\
+    USE_CUDA_PATH=/usr/local/cuda\n\
+    USE_CUDNN=1\n\
+    CUDA_ARCH := -gencode arch=compute_30,code=sm_30\\\n\
+                 -gencode arch=compute_35,code=sm_35\\\n\
+                 -gencode arch=compute_50,code=sm_50\\\n\
+                 -gencode arch=compute_52,code=sm_52\\\n\
+                 -gencode arch=compute_60,code=sm_60\\\n\
+                 -gencode arch=compute_61,code=sm_61\\\n\
     ' >> config.mk && \
+    cp mshadow/make/mshadow.mk /tmp/mshadow.mk && \
+    grep -v MSHADOW_USE_PASCAL=0 /tmp/mshadow.mk > mshadow/make/mshadow.mk && \
+    echo '\nMSHADOW_CFLAGS += -DMSHADOW_USE_PASCAL=1' >> mshadow/make/mshadow.mk && \
+    rm /tmp/mshadow.mk && \
     make -j$(nproc) && \
     cd python && \
     python3 setup.py install && \
@@ -143,7 +166,7 @@ RUN pip3 install seaborn && \
     pip3 install vispy && \
     pip3 install tqdm
 
-# instaling jupyter
+# installing jupyter
 WORKDIR /jupyter/config
 WORKDIR /jupyter/secret
 RUN pip3 install jupyter && \

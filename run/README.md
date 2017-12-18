@@ -8,6 +8,10 @@ Jupyter notebook config file is located in `./config` directory. You might want 
 
 You obviously need [docker](https://docs.docker.com/engine/installation/) installed.
 
+**Prerequisites**
+
+You need [docker](https://docs.docker.com/engine/installation/linux/), [GPU drivers](http://www.nvidia.ru/Download/index.aspx) and [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) installed.
+
 ## Settings
 
 Before running a container you might set some env variables:
@@ -33,7 +37,7 @@ default: `8888`
 Host port where jupyter notebook is listening.
 
 ### DS_IMAGE
-default: `analysiscenter1/ds-py3`
+default: `analysiscenter1/ds-py3:gpu`
 
 Docker image to run in a container.
 

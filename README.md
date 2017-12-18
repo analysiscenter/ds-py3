@@ -1,8 +1,10 @@
-# Docker containers with python 3 environment for data science
+# Docker containers with python 3 environment (with GPU support) for data science
 
-[![Run Status](https://api.shippable.com/projects/58ac7334500f1b1000f99e94/badge?branch=master)](https://app.shippable.com/projects/58ac7334500f1b1000f99e94)
+[![Run Status](https://api.shippable.com/projects/58ac7334500f1b1000f99e94/badge?branch=gpu)](https://app.shippable.com/projects/58ac7334500f1b1000f99e94)
 
-## How to run a data science container
+## How to run the container
 See [run/README.md](run/README.md)
 
-## For a GPU container switch to GPU branch
+## For a "CPU only" container switch to **master** branch
+
+## For a "GPU" container with opencv built with CUDA support switch to **gpu-opencv-cuda** branch
