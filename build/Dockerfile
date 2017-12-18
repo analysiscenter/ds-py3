@@ -29,6 +29,7 @@ RUN pip3 install --upgrade pip && \
     pip3 install packaging && \
     pip3 install click && \
     pip3 install itsdangerous && \
+    pip3 install requests && \
     pip3 install flask && \
     pip3 install pytest && \
     pip3 install pytest-flask && \
@@ -65,18 +66,18 @@ RUN pip3 install scipy && \
 WORKDIR /install/xgboost
 RUN git clone --recursive https://github.com/dmlc/xgboost && \
     cd xgboost && \
+    mkdir build && cd build && \
     cmake -DUSE_CUDA=ON -DGPU_COMPUTE_VER=61 .. && \
     make -j$(nproc) && \
-    cd python-package && \
+    cd ../python-package && \
     python3 setup.py install && \
     cd /install && \
     rm -r xgboost && \
 # installing LightGBM
     git clone --recursive https://github.com/Microsoft/LightGBM && \
     cd LightGBM && \
-    mkdir build && \
-    cd build && \
-    cmake -DUSE_GPU=1 .. && \
+    mkdir build && cd build && \
+    cmake .. && \
     make -j$(nproc) && \
     cd ../python-package && \
     python3 setup.py install && \
