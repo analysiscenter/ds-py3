@@ -4,6 +4,7 @@ MAINTAINER Roman Kh <rhudor@gmail.com>
 # installing system packages
 RUN apt-get update && \
     apt-get install -y pkg-config software-properties-common build-essential cmake gfortran \
+        libboost-dev libboost-system-dev libboost-filesystem-dev \
         liblapack-dev libatlas-base-dev libopenblas-dev \
         zlib1g-dev liblzma-dev liblz4-dev libzstd-dev libsnappy-dev zip p7zip-full \
         libhdf5-dev libedit-dev \
