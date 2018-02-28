@@ -2,4 +2,4 @@
 
 export JUPYTER_CONFIG_DIR=/jupyter/config
 
-exec jupyter notebook --no-browser --allow-root
+exec jupyter lab --no-browser --allow-root
