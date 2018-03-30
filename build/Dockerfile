@@ -2,7 +2,10 @@ FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
 MAINTAINER Roman Kh <rhudor@gmail.com>
 
 # Fix CUDNN for TF 1.6
-RUN apt-get purge -y libcudnn7 libcudnn7-dev && \
+RUN echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/cuda.list && \
+    echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list && \
+    apt-get update && \
+    apt-get purge -y libcudnn7 libcudnn7-dev && \
     apt-get install -y --no-install-recommends \
             libcudnn7=7.0.5.15-1+cuda9.0 \
             libcudnn7-dev=7.0.5.15-1+cuda9.0
@@ -110,7 +113,7 @@ RUN wget https://github.com/google/or-tools/releases/download/v5.0/or-tools_pyth
 # installing image libraries
 RUN apt-get install -y graphviz && \
     pip3 install graphviz && \
-    apt-get install -y libfreetype6-dev libpng-dev libjpeg8-dev && \
+    apt-get install -y libfreetype6-dev libpng-dev libjpeg-dev && \
     cd /install && \
     git clone https://github.com/Itseez/opencv.git && \
     cd opencv && \
