@@ -1,5 +1,11 @@
-FROM nvidia/cuda:8.0-cudnn6-devel-ubuntu16.04
+FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
 MAINTAINER Roman Kh <rhudor@gmail.com>
+
+# Fix CUDNN for TF 1.6
+RUN apt-get purge -y libcudnn7 libcudnn7-dev && \
+    apt-get install -y --no-install-recommends \
+            libcudnn7=7.0.5.15-1+cuda9.0 \
+            libcudnn7-dev=7.0.5.15-1+cuda9.0
 
 # installing system packages
 RUN apt-get update && \
@@ -15,6 +21,7 @@ RUN apt-get update && \
 # installing python packages
 RUN pip3 install --upgrade pip && \
     pip3 install setuptools --upgrade && \
+    pip3 install autopep8 && \
     pip3 install cython && \
     pip3 install toolz && \
     pip3 install dill && \
@@ -30,10 +37,15 @@ RUN pip3 install --upgrade pip && \
     pip3 install click && \
     pip3 install itsdangerous && \
     pip3 install requests && \
+    pip3 install multiprocess && \
     pip3 install eventlet && \
+    pip3 install greenlet && \
+    pip3 install aiohttp && \
+    pip3 install python-socketio && \
     pip3 install flask && \
     pip3 install flask-socketio && \
     pip3 install pytest && \
+    pip3 install pytest-aiohttp && \
     pip3 install pytest-flask && \
     pip3 install tox
 
@@ -111,8 +123,9 @@ RUN apt-get install -y graphviz && \
     make install && \
     cd /install && \
     rm -r opencv && \
-    pip3 install matplotlib && \
-    pip3 install scikit-image
+    pip3 install scikit-image && \
+    pip3 install imageio && \
+    pip3 install matplotlib
 
 # installing special packages
 RUN pip3 install SimpleITK && \
@@ -124,35 +137,11 @@ RUN pip3 install SimpleITK && \
 # increase counter to rebuild the image if some library changes
 ENV UPDATE_DL 1
 # installing deep learning libraries
-RUN pip3 install tensorflow-gpu && \
+RUN pip3 install tensorflow-gpu==1.6 && \
     pip3 install --no-deps keras && \
-    pip3 install --no-deps edward
-RUN git clone https://github.com/dmlc/mxnet.git /install/mxnet --recursive && \
-    cd /install/mxnet && \
-    cp make/config.mk . && \
-    echo 'USE_BLAS=openblas\n\
-    ADD_CFLAGS += -I/usr/include/openblas\n\
-    ADD_LDFLAGS += -lopencv_core -lopencv_imgproc -lopencv_imgcodecs\n\
-    USE_CUDA=1\n\
-    USE_CUDA_PATH=/usr/local/cuda\n\
-    USE_CUDNN=1\n\
-    CUDA_ARCH := -gencode arch=compute_30,code=sm_30\\\n\
-                 -gencode arch=compute_35,code=sm_35\\\n\
-                 -gencode arch=compute_50,code=sm_50\\\n\
-                 -gencode arch=compute_52,code=sm_52\\\n\
-                 -gencode arch=compute_60,code=sm_60\\\n\
-                 -gencode arch=compute_61,code=sm_61\\\n\
-    ' >> config.mk && \
-    cp mshadow/make/mshadow.mk /tmp/mshadow.mk && \
-    grep -v MSHADOW_USE_PASCAL=0 /tmp/mshadow.mk > mshadow/make/mshadow.mk && \
-    echo '\nMSHADOW_CFLAGS += -DMSHADOW_USE_PASCAL=1' >> mshadow/make/mshadow.mk && \
-    rm /tmp/mshadow.mk && \
-    make -j$(nproc) && \
-    cd python && \
-    python3 setup.py install && \
-    cd /install && \
-    rm -r mxnet && \
-    pip3 install minpy
+    pip3 install --no-deps edward && \
+    pip3 install http://download.pytorch.org/whl/cu90/torch-0.3.1-cp35-cp35m-linux_x86_64.whl  && \
+    pip3 install torchvision
 
 # installing visualization libraries
 RUN pip3 install seaborn && \
