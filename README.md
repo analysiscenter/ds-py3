@@ -2,17 +2,13 @@
 
 [![Run Status](https://api.shippable.com/projects/58ac7334500f1b1000f99e94/badge?branch=gpu)](https://app.shippable.com/projects/58ac7334500f1b1000f99e94)
 
-## For a "CPU only" container switch to **master** branch
+## For a "CPU only" container switch to **cpu** branch
 
 
 # Installation directory
-Within a home directory execute the following commands:
 ```
-mkdir repo
-cd repo
 git clone https://github.com/analysiscenter/ds-py3.git
 cd ds-py3
-git checkout gpu-1.6
 ```
 
 # NVIDIA driver

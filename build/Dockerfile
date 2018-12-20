@@ -1,14 +1,19 @@
 FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
 MAINTAINER Roman Kh <rhudor@gmail.com>
 
-# Fix CUDNN for TF 1.6
+ENV TF_VERSION=1.12
+ENV CUDA_VERSION=9.0
+ENV CUDNN_VERSION=7.2.1.38-1
+
+# Update CUDA for TF
 RUN echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/cuda.list && \
     echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list && \
     apt-get update && \
     apt-get purge -y libcudnn7 libcudnn7-dev && \
     apt-get install -y --no-install-recommends \
-            libcudnn7=7.0.5.15-1+cuda9.0 \
-            libcudnn7-dev=7.0.5.15-1+cuda9.0
+            libcudnn7=$CUDNN_VERSION+cuda$CUDA_VERSION \
+            libcudnn7-dev=$CUDNN_VERSION+cuda$CUDA_VERSION && \
+    apt-get install libnvinfer4=4.1.2-1+cuda$CUDA_VERSION
 
 # installing system packages
 RUN apt-get update && \
@@ -19,11 +24,12 @@ RUN apt-get update && \
         libhdf5-dev libedit-dev \
         libzmq-dev \
         git wget tmux nano sysstat htop mc \
-        python3-pip python3-dev pylint3
+        python3-pip python3-dev
 
 # installing python packages
 RUN pip3 install --upgrade pip && \
     pip3 install setuptools --upgrade && \
+    pip3 install pipenv && \
     pip3 install autopep8 && \
     pip3 install cython && \
     pip3 install toolz && \
@@ -50,14 +56,15 @@ RUN pip3 install --upgrade pip && \
     pip3 install pytest && \
     pip3 install pytest-aiohttp && \
     pip3 install pytest-flask && \
-    pip3 install tox
+    pip3 install tox && \
+    pip3 install --upgrade pylint
 
-# installing LLVM
+# installing LLVM and Numba
 RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
-    apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-5.0 main" && \
+    apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-7 main" && \
     apt-get update && \
-    apt-get install -y llvm-5.0 && \
-    ln -s /usr/bin/llvm-config-5.0 /usr/bin/llvm-config && \
+    apt-get install -y llvm-7 && \
+    ln -s /usr/bin/llvm-config-7 /usr/bin/llvm-config && \
     pip3 install llvmlite && \
     pip3 install numba
 
@@ -135,16 +142,18 @@ RUN pip3 install SimpleITK && \
     pip3 install pydicom && \
     pip3 install wfdb && \
     pip3 install PyWavelets && \
-    pip3 install pyedflib
+    pip3 install pyedflib && \
+    pip3 install segyio && \
+    pip3 install lasio
 
 # increase counter to rebuild the image if some library changes
 ENV UPDATE_DL 1
 # installing deep learning libraries
-RUN pip3 install tensorflow-gpu==1.6 && \
+RUN pip3 install tensorflow-gpu==$TF_VERSION && \
     pip3 install --no-deps keras && \
     pip3 install --no-deps edward && \
-    pip3 install http://download.pytorch.org/whl/cu90/torch-0.3.1-cp35-cp35m-linux_x86_64.whl  && \
-    pip3 install torchvision
+    pip3 install torch torchvision && \
+    pip3 install pyro-ppl
 
 # installing visualization libraries
 RUN pip3 install seaborn && \
