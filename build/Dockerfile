@@ -1,18 +1,5 @@
-FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
+FROM ubuntu/ubuntu:16.04
 MAINTAINER Roman Kh <rhudor@gmail.com>
-
-ENV TF_VERSION=1.12
-ENV CUDA_VERSION=9.0
-ENV CUDNN_VERSION=7.2.1.38-1
-
-# Update CUDA for TF
-RUN echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/cuda.list && \
-    echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list && \
-    apt-get update && \
-    apt-get purge -y --allow-change-held-packages libcudnn7 libcudnn7-dev && \
-    apt-get install -y --no-install-recommends \
-            libcudnn7=$CUDNN_VERSION+cuda$CUDA_VERSION \
-            libcudnn7-dev=$CUDNN_VERSION+cuda$CUDA_VERSION
 
 # installing system packages
 RUN apt-get update && \
@@ -91,7 +78,7 @@ WORKDIR /install/xgboost
 RUN git clone --recursive https://github.com/dmlc/xgboost && \
     cd xgboost && \
     mkdir build && cd build && \
-    cmake -DUSE_CUDA=ON -DGPU_COMPUTE_VER=61 .. && \
+    cmake .. && \
     make -j$(nproc) && \
     cd ../python-package && \
     python3 setup.py install && \
@@ -149,7 +136,7 @@ RUN pip3 install SimpleITK && \
 # increase counter to rebuild the image if some library changes
 ENV UPDATE_DL 1
 # installing deep learning libraries
-RUN pip3 install tensorflow-gpu==$TF_VERSION && \
+RUN pip3 install tensorflow && \
     pip3 install --no-deps keras && \
     pip3 install --no-deps edward && \
     pip3 install torch torchvision torchtext && \
