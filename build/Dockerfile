@@ -9,11 +9,10 @@ ENV CUDNN_VERSION=7.2.1.38-1
 RUN echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/cuda.list && \
     echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list && \
     apt-get update && \
-    apt-get purge -y libcudnn7 libcudnn7-dev && \
+    apt-get purge -y --allow-change-held-packages libcudnn7 libcudnn7-dev && \
     apt-get install -y --no-install-recommends \
             libcudnn7=$CUDNN_VERSION+cuda$CUDA_VERSION \
-            libcudnn7-dev=$CUDNN_VERSION+cuda$CUDA_VERSION && \
-    apt-get install libnvinfer4=4.1.2-1+cuda$CUDA_VERSION
+            libcudnn7-dev=$CUDNN_VERSION+cuda$CUDA_VERSION
 
 # installing system packages
 RUN apt-get update && \
@@ -27,7 +26,8 @@ RUN apt-get update && \
         python3-pip python3-dev
 
 # installing python packages
-RUN pip3 install --upgrade pip && \
+RUN pip3 install -U pip && \ 
+    hash -r pip3 && \
     pip3 install setuptools --upgrade && \
     pip3 install pipenv && \
     pip3 install autopep8 && \
@@ -37,9 +37,6 @@ RUN pip3 install --upgrade pip && \
     pip3 install fastcache && \
     pip3 install python-snappy && \
     pip3 install blosc && \
-    pip3 install numpy && \
-    pip3 install bottleneck && \
-    pip3 install numexpr && \
     pip3 install virtualenv && \
     pip3 install aiofiles && \
     pip3 install packaging && \
@@ -69,7 +66,10 @@ RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
     pip3 install numba
 
 # installing data manipulation packages
-RUN pip3 install tables && \
+RUN pip3 install numpy && \
+    pip3 install bottleneck && \
+    pip3 install numexpr && \ 
+    pip3 install tables && \
     pip3 install h5py && \
     pip3 install pandas && \
     pip3 install feather-format && \
@@ -152,7 +152,7 @@ ENV UPDATE_DL 1
 RUN pip3 install tensorflow-gpu==$TF_VERSION && \
     pip3 install --no-deps keras && \
     pip3 install --no-deps edward && \
-    pip3 install torch torchvision && \
+    pip3 install torch torchvision torchtext && \
     pip3 install pyro-ppl
 
 # installing visualization libraries
