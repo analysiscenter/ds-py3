@@ -1,4 +1,4 @@
-FROM ubuntu/ubuntu:16.04
+FROM ubuntu:16.04
 MAINTAINER Roman Kh <rhudor@gmail.com>
 
 # installing system packages
