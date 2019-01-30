@@ -28,9 +28,8 @@ RUN apt-get update && \
 # installing python packages
 RUN pip3 install -U pip && \ 
     hash -r pip3 && \
-    pip3 install setuptools --upgrade && \
+    pip3 install -U setuptools && \
     pip3 install pipenv && \
-    pip3 install autopep8 && \
     pip3 install cython && \
     pip3 install toolz && \
     pip3 install dill && \
@@ -44,6 +43,7 @@ RUN pip3 install -U pip && \
     pip3 install itsdangerous && \
     pip3 install requests && \
     pip3 install multiprocess && \
+    pip3 install psutil && \
     pip3 install eventlet && \
     pip3 install greenlet && \
     pip3 install aiohttp && \
@@ -54,7 +54,8 @@ RUN pip3 install -U pip && \
     pip3 install pytest-aiohttp && \
     pip3 install pytest-flask && \
     pip3 install tox && \
-    pip3 install --upgrade pylint
+    pip3 install autopep8 && \
+    pip3 install -U pylint
 
 # installing LLVM and Numba
 RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
