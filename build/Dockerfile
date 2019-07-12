@@ -91,7 +91,7 @@ RUN pip3 install numpy && \
     pip3 install feather-format && \
     pip3 install fastparquet && \
     pip3 install dask && \
-    pip3 install python-dateutil
+    pip3 install python-dateutil && \
     pip3 install plotly
 
 # installing stats and ML libraries
