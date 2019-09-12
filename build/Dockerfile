@@ -25,6 +25,21 @@ RUN apt-get update && \
         git wget tmux nano sysstat htop mc \
         python3-pip python3-dev
 
+# Update CMake
+
+RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add - && \
+    apt-add-repository 'deb https://apt.kitware.com/ubuntu/ xenial main' && \
+    apt-get update && \
+    apt-get install cmake -y
+
+# Install russian locale
+
+RUN apt-get install -y language-pack-ru && \
+    echo ru_RU.UTF8 >> /var/lib/locales/supported.d/local && \
+    echo ru_RU.UTF-8 UTF-8 >> /var/lib/locales/supported.d/local
+
+ENV LC_CTYPE=ru_RU.UTF-8
+
 # installing python packages
 RUN pip3 install -U pip && \ 
     hash -r pip3 && \
@@ -76,7 +91,8 @@ RUN pip3 install numpy && \
     pip3 install feather-format && \
     pip3 install fastparquet && \
     pip3 install dask && \
-    pip3 install python-dateutil
+    pip3 install python-dateutil && \
+    pip3 install plotly
 
 # installing stats and ML libraries
 RUN pip3 install scipy && \
