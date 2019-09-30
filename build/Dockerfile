@@ -69,6 +69,7 @@ RUN pip3 install -U pip && \
     pip3 install tox && \
     pip3 install autopep8 && \
     pip3 install -U pylint
+    pip3 install pipreqs
 
 # install LLVM and Numba
 RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
@@ -180,9 +181,9 @@ RUN pip3 install seaborn && \
     pip3 install tqdm
 
 # install nodejs and npm
-RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesetup.sh && \
-    bash nodesetup.sh && \
-    apt install -y nodejs
+RUN apt-get install -y curl && \
+    curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+    apt-get install -y nodejs
 
 # install jupyter and extensions
 WORKDIR /jupyter/config
@@ -196,7 +197,7 @@ RUN pip3 install jupyter && \
     pip3 install -U nbdime && \
     nbdime extensions --enable && \
     jupyter labextension install @jupyterlab/git && \
-    pip install --upgrade jupyterlab-git && \
+    pip3 install --upgrade jupyterlab-git && \
     jupyter serverextension enable --py jupyterlab_git && \
     jupyter labextension install @jupyterlab/toc && \
     jupyter labextension install @jupyterlab/github
