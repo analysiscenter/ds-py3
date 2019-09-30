@@ -68,7 +68,7 @@ RUN pip3 install -U pip && \
     pip3 install pytest-flask && \
     pip3 install tox && \
     pip3 install autopep8 && \
-    pip3 install -U pylint
+    pip3 install -U pylint && \
     pip3 install pipreqs
 
 # install LLVM and Numba
