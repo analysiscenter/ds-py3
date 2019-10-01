@@ -3,7 +3,7 @@ LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
 ENV TF_VERSION=1.14
 ENV CUDA_VERSION=9.0
-ENV CUDNN_VERSION=7.2.1.38-1
+ENV CUDNN_VERSION=7.4.1
 
 # update CUDA for TF
 RUN echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/cuda.list && \
@@ -69,7 +69,8 @@ RUN pip3 install -U pip && \
     pip3 install tox && \
     pip3 install autopep8 && \
     pip3 install -U pylint && \
-    pip3 install pipreqs
+    pip3 install pipreqs && \
+    pip3 install tdigest
 
 # install LLVM and Numba
 RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
@@ -200,7 +201,9 @@ RUN pip3 install jupyter && \
     pip3 install --upgrade jupyterlab-git && \
     jupyter serverextension enable --py jupyterlab_git && \
     jupyter labextension install @jupyterlab/toc && \
-    jupyter labextension install @jupyterlab/github
+    jupyter labextension install @jupyterlab/github && \
+    pip3 install ipywidgets && \
+    jupyter nbextension enable --py --sys-prefix widgetsnbextension
 
 # install forked libraries
 RUN pip3 uninstall -y pillow && \
