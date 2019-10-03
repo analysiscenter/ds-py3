@@ -1,18 +1,7 @@
-FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
+FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
 ENV TF_VERSION=1.14
-ENV CUDA_VERSION=9.0
-ENV CUDNN_VERSION=7.4.1
-
-# update CUDA for TF
-RUN echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/cuda.list && \
-    echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list && \
-    apt-get update && \
-    apt-get purge -y --allow-change-held-packages libcudnn7 libcudnn7-dev && \
-    apt-get install -y --no-install-recommends \
-            libcudnn7=$CUDNN_VERSION+cuda$CUDA_VERSION \
-            libcudnn7-dev=$CUDNN_VERSION+cuda$CUDA_VERSION
 
 # install system packages
 RUN apt-get update && \
@@ -203,7 +192,8 @@ RUN pip3 install jupyter && \
     jupyter labextension install @jupyterlab/toc && \
     jupyter labextension install @jupyterlab/github && \
     pip3 install ipywidgets && \
-    jupyter nbextension enable --py --sys-prefix widgetsnbextension
+    jupyter nbextension enable --py --sys-prefix widgetsnbextension && \
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager
 
 # install forked libraries
 RUN pip3 uninstall -y pillow && \
