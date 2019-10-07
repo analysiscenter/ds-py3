@@ -10,5 +10,4 @@ sudo mkdir /data
 rm -rf ./run/data
 ln -s /data ./run/data
 
-
 sudo docker pull analysiscenter1/ds-py3
