@@ -13,4 +13,4 @@ jobs:
   
     steps:
     - uses: actions/checkout@v1
-      run: ps -ef
+    - run: ps -ef
