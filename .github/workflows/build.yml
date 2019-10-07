@@ -10,5 +10,5 @@ jobs:
  
     steps:
     - uses: actions/checkout@v1
-    - name: Build the Docker image
+    - uses: docker://analysiscenter1/ds-py3:cpu
       run: ps -ef
