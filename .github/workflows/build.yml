@@ -6,9 +6,9 @@ jobs:
 
   build:
  
-    runs-on: ubuntu-latest
+    runs-on: analysiscenter1/ds-py3:cpu
  
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
-      run: docker build build --tag ds-py3
+      run: ps -ef
