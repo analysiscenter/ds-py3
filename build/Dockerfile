@@ -59,8 +59,11 @@ RUN pip3 install -U pip && \
     pip3 install autopep8 && \
     pip3 install -U pylint && \
     pip3 install pipreqs && \
-    pip3 install tdigest && \
-    pip3 install snakeviz
+    pip3 install tdigest
+
+# install virtual env
+RUN apt-get install python3-venv && \
+    pip3 install virtualenv
 
 # install LLVM and Numba
 RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
