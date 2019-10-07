@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
-MAINTAINER Roman Kh <rhudor@gmail.com>
+LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
-# installing system packages
+# install system packages
 RUN apt-get update && \
     apt-get install -y pkg-config software-properties-common build-essential cmake gfortran \
         libboost-dev libboost-system-dev libboost-filesystem-dev \
@@ -12,7 +12,14 @@ RUN apt-get update && \
         git wget tmux nano sysstat htop mc \
         python3-pip python3-dev
 
-# installing python packages
+# install russian locale
+RUN apt-get install -y language-pack-ru && \
+    echo ru_RU.UTF8 >> /var/lib/locales/supported.d/local && \
+    echo ru_RU.UTF-8 UTF-8 >> /var/lib/locales/supported.d/local
+
+ENV LC_CTYPE=ru_RU.UTF-8
+
+# install python packages
 RUN pip3 install -U pip && \ 
     hash -r pip3 && \
     pip3 install -U setuptools && \
@@ -42,9 +49,11 @@ RUN pip3 install -U pip && \
     pip3 install pytest-flask && \
     pip3 install tox && \
     pip3 install autopep8 && \
-    pip3 install -U pylint
+    pip3 install -U pylint && \
+    pip3 install pipreqs && \
+    pip3 install tdigest
 
-# installing LLVM and Numba
+# install LLVM and Numba
 RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
     apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-7 main" && \
     apt-get update && \
@@ -53,7 +62,7 @@ RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
     pip3 install llvmlite && \
     pip3 install numba
 
-# installing data manipulation packages
+# install data manipulation packages
 RUN pip3 install numpy && \
     pip3 install bottleneck && \
     pip3 install numexpr && \ 
@@ -65,7 +74,7 @@ RUN pip3 install numpy && \
     pip3 install dask && \
     pip3 install python-dateutil
 
-# installing stats and ML libraries
+# install stats and ML libraries
 RUN pip3 install scipy && \
     pip3 install sklearn && \
     pip3 install sklearn-pandas && \
@@ -74,7 +83,7 @@ RUN pip3 install scipy && \
     pip3 install nltk && \
     pip3 install hmmlearn
 
-# installing XGBoost and LightGBM
+# install XGBoost and LightGBM
 WORKDIR /install/xgboost
 RUN git clone --recursive https://github.com/dmlc/xgboost && \
     cd xgboost && \
@@ -85,7 +94,7 @@ RUN git clone --recursive https://github.com/dmlc/xgboost && \
     python3 setup.py install && \
     cd /install && \
     rm -r xgboost && \
-# installing LightGBM
+# install LightGBM
     git clone --recursive https://github.com/Microsoft/LightGBM && \
     cd LightGBM && \
     mkdir build && cd build && \
@@ -96,7 +105,7 @@ RUN git clone --recursive https://github.com/dmlc/xgboost && \
     cd /install && \
     rm -r LightGBM
 
-# installing Google OrTools
+# install Google OrTools
 WORKDIR /install/ortools
 RUN wget https://github.com/google/or-tools/releases/download/v5.0/or-tools_python_examples_v5.0.3919.tar.gz && \
     tar xvf or-tools_python_examples_v5.0.3919.tar.gz && \
@@ -105,7 +114,7 @@ RUN wget https://github.com/google/or-tools/releases/download/v5.0/or-tools_pyth
     cd /install && \
     rm -r ortools
 
-# installing image libraries
+# install image libraries
 RUN apt-get install -y graphviz && \
     pip3 install graphviz && \
     apt-get install -y libfreetype6-dev libpng-dev libjpeg-dev && \
@@ -125,7 +134,7 @@ RUN apt-get install -y graphviz && \
     pip3 install imageio && \
     pip3 install matplotlib
 
-# installing special packages
+# install special packages
 RUN pip3 install SimpleITK && \
     pip3 install pydicom && \
     pip3 install wfdb && \
@@ -136,14 +145,14 @@ RUN pip3 install SimpleITK && \
 
 # increase counter to rebuild the image if some library changes
 ENV UPDATE_DL 1
-# installing deep learning libraries
+# install deep learning libraries
 RUN pip3 install tensorflow && \
     pip3 install --no-deps keras && \
     pip3 install --no-deps edward && \
     pip3 install torch torchvision torchtext && \
     pip3 install pyro-ppl
 
-# installing visualization libraries
+# install visualization libraries
 RUN pip3 install seaborn && \
     pip3 install ggplot && \
     pip3 install bokeh && \
@@ -152,7 +161,12 @@ RUN pip3 install seaborn && \
     pip3 install vispy && \
     pip3 install tqdm
 
-# installing jupyter
+# install nodejs and npm
+RUN apt-get install -y curl && \
+    curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+    apt-get install -y nodejs
+
+# install jupyter
 WORKDIR /jupyter/config
 WORKDIR /jupyter/secret
 RUN pip3 install jupyter && \
@@ -160,7 +174,17 @@ RUN pip3 install jupyter && \
     pip3 install jupyter_contrib_nbextensions && \
     jupyter contrib nbextension install --system && \
     pip3 install ipyvolume && \
-    pip3 install jupyterhub
+    pip3 install jupyterhub && \
+    pip3 install -U nbdime && \
+    nbdime extensions --enable && \
+    jupyter labextension install @jupyterlab/git && \
+    pip3 install --upgrade jupyterlab-git && \
+    jupyter serverextension enable --py jupyterlab_git && \
+    jupyter labextension install @jupyterlab/toc && \
+    jupyter labextension install @jupyterlab/github && \
+    pip3 install ipywidgets && \
+    jupyter nbextension enable --py --sys-prefix widgetsnbextension && \
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager
 
 # install forked libraries
 RUN pip3 uninstall -y pillow && \
