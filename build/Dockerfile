@@ -31,14 +31,15 @@ ENV LC_CTYPE=ru_RU.UTF-8
 RUN pip3 install -U pip && \ 
     hash -r pip3 && \
     pip3 install -U setuptools && \
+    apt-get install -y python3-venv && \
     pip3 install pipenv && \
+    pip3 install virtualenv && \
     pip3 install cython && \
     pip3 install toolz && \
     pip3 install dill && \
     pip3 install fastcache && \
     pip3 install python-snappy && \
     pip3 install blosc && \
-    pip3 install virtualenv && \
     pip3 install aiofiles && \
     pip3 install packaging && \
     pip3 install click && \
@@ -55,6 +56,7 @@ RUN pip3 install -U pip && \
     pip3 install pytest && \
     pip3 install pytest-aiohttp && \
     pip3 install pytest-flask && \
+    pip3 install pytest-cov && \
     pip3 install tox && \
     pip3 install autopep8 && \
     pip3 install -U pylint && \
