@@ -1,0 +1,24 @@
+name: Build and push
+
+on:
+  pull_request:
+    types: [closed]
+    branches: master
+    
+jobs:
+
+  build-push:
+ 
+    runs-on: ubuntu-latest
+  
+    steps:
+    - uses: actions/checkout@v1
+
+    - uses: azure/docker-login@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USER }}
+        password: ${{ secrets.DOCKER_HUB_PASS }}
+    
+    - run: |
+        docker build build -t analysiscenter1/ds-py3
+        docker push analysiscenter1/ds-py3
