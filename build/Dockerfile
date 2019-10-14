@@ -24,8 +24,9 @@ RUN pip3 install -U pip && \
     hash -r pip3 && \
     pip3 install -U setuptools && \
     apt-get install -y python3-venv && \
-    pip3 install pipenv && \
     pip3 install virtualenv && \
+    pip3 install pipenv && \
+    pip3 install pipreqs && \
     pip3 install cython && \
     pip3 install toolz && \
     pip3 install dill && \
@@ -51,9 +52,7 @@ RUN pip3 install -U pip && \
     pip3 install pytest-cov && \
     pip3 install tox && \
     pip3 install autopep8 && \
-    pip3 install -U pylint && \
-    pip3 install pipreqs && \
-    pip3 install tdigest
+    pip3 install -U pylint
 
 # install LLVM and Numba
 RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
@@ -83,7 +82,8 @@ RUN pip3 install scipy && \
     pip3 install statsmodels && \
     pip3 install pyflux && \
     pip3 install nltk && \
-    pip3 install hmmlearn
+    pip3 install hmmlearn && \
+    pip3 install tdigest
 
 # install XGBoost and LightGBM
 WORKDIR /install/xgboost
@@ -133,8 +133,7 @@ RUN apt-get install -y graphviz && \
     cd /install && \
     rm -r opencv && \
     pip3 install scikit-image && \
-    pip3 install imageio && \
-    pip3 install matplotlib
+    pip3 install imageio
 
 # install special packages
 RUN pip3 install SimpleITK && \
@@ -143,7 +142,8 @@ RUN pip3 install SimpleITK && \
     pip3 install PyWavelets && \
     pip3 install pyedflib && \
     pip3 install segyio && \
-    pip3 install lasio
+    pip3 install lasio && \
+    pip3 install xlrd
 
 # increase counter to rebuild the image if some library changes
 ENV UPDATE_DL 1
@@ -161,6 +161,8 @@ RUN pip3 install seaborn && \
     pip3 install folium && \
     pip3 install --no-deps picasso-viz && \
     pip3 install vispy && \
+    pip3 install plotly && \
+    pip3 install matplotlib && \
     pip3 install tqdm
 
 # install nodejs and npm
