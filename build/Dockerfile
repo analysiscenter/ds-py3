@@ -83,7 +83,7 @@ RUN pip3 install scipy && \
     pip3 install pyflux && \
     pip3 install nltk && \
     pip3 install hmmlearn && \
-    pip3 install ortools & \\
+    pip3 install ortools && \
     pip3 install tdigest
 
 # install XGBoost and LightGBM
@@ -108,25 +108,6 @@ RUN git clone --recursive https://github.com/dmlc/xgboost && \
     cd /install && \
     rm -r LightGBM
 
-# install image libraries
-RUN apt-get install -y graphviz && \
-    pip3 install graphviz && \
-    apt-get install -y libfreetype6-dev libpng-dev libjpeg-dev && \
-    cd /install && \
-    git clone https://github.com/Itseez/opencv.git && \
-    cd opencv && \
-    mkdir build && \
-    cd build && \
-    cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local \
-          -D ENABLE_FAST_MATH=1 \
-          -D WITH_CUDA=OFF -D WITH_CUBLAS=0 -D CUDA_FAST_MATH=0 ../../opencv && \
-    make -j$(nproc) && \
-    make install && \
-    cd /install && \
-    rm -r opencv && \
-    pip3 install scikit-image && \
-    pip3 install imageio
-
 # install special packages
 RUN pip3 install SimpleITK && \
     pip3 install pydicom && \
@@ -146,16 +127,33 @@ RUN pip3 install tensorflow && \
     pip3 install torch torchvision torchtext && \
     pip3 install pyro-ppl
 
-# install visualization libraries
-RUN pip3 install seaborn && \
+# install visualization and image libraries
+RUN pip3 install matplotlib && \
+    pip3 install seaborn && \
+    pip3 install vispy && \
     pip3 install ggplot && \
     pip3 install bokeh && \
     pip3 install folium && \
     pip3 install --no-deps picasso-viz && \
-    pip3 install vispy && \
     pip3 install plotly && \
-    pip3 install matplotlib && \
-    pip3 install tqdm
+    pip3 install tqdm && \
+    apt-get install -y graphviz && \
+    pip3 install graphviz && \
+    apt-get install -y libfreetype6-dev libpng-dev libjpeg-dev && \
+    cd /install && \
+    git clone https://github.com/Itseez/opencv.git && \
+    cd opencv && \
+    mkdir build && \
+    cd build && \
+    cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local \
+          -D ENABLE_FAST_MATH=1 \
+          -D WITH_CUDA=OFF -D WITH_CUBLAS=0 -D CUDA_FAST_MATH=0 ../../opencv && \
+    make -j$(nproc) && \
+    make install && \
+    cd /install && \
+    rm -r opencv && \
+    pip3 install scikit-image && \
+    pip3 install imageio
 
 # install nodejs and npm
 RUN apt-get install -y curl && \
