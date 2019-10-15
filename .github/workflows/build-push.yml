@@ -20,4 +20,4 @@ jobs:
     - name: Push
       run: |
         docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASS }}
-        docker push analysiscenter1/ds-py3
+        docker push analysiscenter1/ds-py3:cpu
