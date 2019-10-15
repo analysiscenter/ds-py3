@@ -108,25 +108,6 @@ RUN git clone --recursive https://github.com/dmlc/xgboost && \
     cd /install && \
     rm -r LightGBM
 
-# install special packages
-RUN pip3 install SimpleITK && \
-    pip3 install pydicom && \
-    pip3 install wfdb && \
-    pip3 install PyWavelets && \
-    pip3 install pyedflib && \
-    pip3 install segyio && \
-    pip3 install lasio && \
-    pip3 install xlrd
-
-# increase counter to rebuild the image if some library changes
-ENV UPDATE_DL 1
-# install deep learning libraries
-RUN pip3 install tensorflow && \
-    pip3 install --no-deps keras && \
-    pip3 install --no-deps edward && \
-    pip3 install torch torchvision torchtext && \
-    pip3 install pyro-ppl
-
 # install visualization and image libraries
 RUN pip3 install matplotlib && \
     pip3 install seaborn && \
@@ -154,6 +135,25 @@ RUN pip3 install matplotlib && \
     rm -r opencv && \
     pip3 install scikit-image && \
     pip3 install imageio
+
+# install special packages
+RUN pip3 install SimpleITK && \
+    pip3 install pydicom && \
+    pip3 install wfdb && \
+    pip3 install PyWavelets && \
+    pip3 install pyedflib && \
+    pip3 install segyio && \
+    pip3 install lasio && \
+    pip3 install xlrd
+
+# increase counter to rebuild the image if some library changes
+ENV UPDATE_DL 1
+# install deep learning libraries
+RUN pip3 install tensorflow && \
+    pip3 install --no-deps keras && \
+    pip3 install --no-deps edward && \
+    pip3 install torch torchvision torchtext && \
+    pip3 install pyro-ppl
 
 # install nodejs and npm
 RUN apt-get install -y curl && \
