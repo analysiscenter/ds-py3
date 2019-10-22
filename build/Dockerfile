@@ -83,58 +83,25 @@ RUN pip3 install scipy && \
     pip3 install pyflux && \
     pip3 install nltk && \
     pip3 install hmmlearn && \
+    pip3 install xgboost && \
+    pip3 install catboost && \
     pip3 install ortools && \
     pip3 install tdigest
 
-# install XGBoost and LightGBM
-WORKDIR /install/xgboost
-RUN git clone --recursive https://github.com/dmlc/xgboost && \
-    cd xgboost && \
-    mkdir build && cd build && \
-    cmake .. && \
-    make -j$(nproc) && \
-    cd ../python-package && \
-    python3 setup.py install && \
-    cd /install && \
-    rm -r xgboost && \
-# install LightGBM
-    git clone --recursive https://github.com/Microsoft/LightGBM && \
-    cd LightGBM && \
-    mkdir build && cd build && \
-    cmake .. && \
-    make -j$(nproc) && \
-    cd ../python-package && \
-    python3 setup.py install && \
-    cd /install && \
-    rm -r LightGBM
-
-# install visualization and image libraries
-RUN pip3 install matplotlib && \
+# install image libraries
+RUN apt-get install -y graphviz libfreetype6-dev libpng-dev libjpeg-dev && \
+    pip3 install graphviz && \
+    pip3 install opencv-python && \
+    pip3 install matplotlib && \
+    pip3 install scikit-image && \
+    pip3 install imageio && \
     pip3 install seaborn && \
-    pip3 install vispy && \
     pip3 install ggplot && \
     pip3 install bokeh && \
     pip3 install folium && \
-    pip3 install --no-deps picasso-viz && \
+    pip3 install vispy && \
     pip3 install plotly && \
-    pip3 install tqdm && \
-    apt-get install -y graphviz && \
-    pip3 install graphviz && \
-    apt-get install -y libfreetype6-dev libpng-dev libjpeg-dev && \
-    cd /install && \
-    git clone https://github.com/Itseez/opencv.git && \
-    cd opencv && \
-    mkdir build && \
-    cd build && \
-    cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local \
-          -D ENABLE_FAST_MATH=1 \
-          -D WITH_CUDA=OFF -D WITH_CUBLAS=0 -D CUDA_FAST_MATH=0 ../../opencv && \
-    make -j$(nproc) && \
-    make install && \
-    cd /install && \
-    rm -r opencv && \
-    pip3 install scikit-image && \
-    pip3 install imageio
+    pip3 install tqdm
 
 # install special packages
 RUN pip3 install SimpleITK && \
