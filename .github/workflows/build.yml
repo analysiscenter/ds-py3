@@ -6,10 +6,10 @@ on:
 jobs:
 
   build:
- 
+
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
-    
+
     - run: docker build build -t analysiscenter1/ds-py3
