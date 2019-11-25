@@ -101,7 +101,8 @@ RUN pip3 install scipy && \
     pip3 install statsmodels && \
     pip3 install pyflux && \
     pip3 install nltk && \
-    pip3 install hmmlearn
+    pip3 install hmmlearn && \
+    pip3 install ortools
 
 # installing XGBoost and LightGBM
 WORKDIR /install/xgboost
@@ -124,15 +125,6 @@ RUN git clone --recursive https://github.com/dmlc/xgboost && \
     python3 setup.py install && \
     cd /install && \
     rm -r LightGBM
-
-# installing Google OrTools
-WORKDIR /install/ortools
-RUN wget https://github.com/google/or-tools/releases/download/v5.0/or-tools_python_examples_v5.0.3919.tar.gz && \
-    tar xvf or-tools_python_examples_v5.0.3919.tar.gz && \
-    cd ortools_examples && \
-    python3 setup.py install && \
-    cd /install && \
-    rm -r ortools
 
 # installing image libraries
 RUN apt-get install -y graphviz && \
