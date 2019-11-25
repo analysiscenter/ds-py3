@@ -37,6 +37,8 @@ RUN pip3 install -U pip && \
     pip3 install pipreqs && \
     pip3 install cython && \
     pip3 install toolz && \
+    pip3 install fsspec && \
+    pip3 install cloudpickle && \
     pip3 install dill && \
     pip3 install fastcache && \
     pip3 install python-snappy && \
@@ -64,10 +66,10 @@ RUN pip3 install -U pip && \
 
 # install LLVM and Numba
 RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
-    apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-7 main" && \
+    apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-8 main" && \
     apt-get update && \
-    apt-get install -y llvm-7 && \
-    ln -s /usr/bin/llvm-config-7 /usr/bin/llvm-config && \
+    apt-get install -y llvm-8 && \
+    ln -s /usr/bin/llvm-config-8 /usr/bin/llvm-config && \
     pip3 install llvmlite && \
     pip3 install numba
 
