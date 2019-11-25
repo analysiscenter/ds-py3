@@ -3,7 +3,6 @@
 sudo apt-get purge nvidia*
 sudo add-apt-repository ppa:graphics-drivers/ppa
 sudo apt update
-sudo apt install -y --no-install-recommends nvidia-410
-sudo apt install -y libcuda1-410
+sudo apt install nvidia-driver-430 nvidia-settings
 
 nvidia-smi
