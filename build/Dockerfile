@@ -2,6 +2,7 @@ FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
 ENV TF_VERSION=1.14
+ENV PIP_NO_CACHE_DIR=true
 
 # install system packages
 RUN apt-get update && \
@@ -10,7 +11,7 @@ RUN apt-get update && \
         liblapack-dev libatlas-base-dev libopenblas-dev \
         zlib1g-dev liblzma-dev liblz4-dev libzstd-dev libsnappy-dev zip p7zip-full \
         libhdf5-dev libedit-dev \
-        libzmq-dev \
+        libzmq3-dev \
         git wget tmux nano sysstat htop mc \
         python3-pip python3-dev
 
