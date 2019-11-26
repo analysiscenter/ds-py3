@@ -2,7 +2,6 @@ FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
 ENV TF_VERSION=1.14
-ENV PIP_NO_CACHE_DIR=true
 
 # install system packages
 RUN apt-get update && \
@@ -13,7 +12,9 @@ RUN apt-get update && \
         libhdf5-dev libedit-dev \
         libzmq3-dev \
         git wget tmux nano sysstat htop mc \
-        python3-pip python3-dev
+        python3-pip python3-dev && \
+    pip3 install -U pip && \
+    hash -r pip3
 
 # update CMake
 RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add - && \
@@ -27,11 +28,10 @@ RUN apt-get install -y language-pack-ru && \
     echo ru_RU.UTF-8 UTF-8 >> /var/lib/locales/supported.d/local
 
 ENV LC_CTYPE=ru_RU.UTF-8
+ENV PIP_NO_CACHE_DIR=true
 
 # install python packages
-RUN pip3 install -U pip && \
-    hash -r pip3 && \
-    pip3 install -U setuptools && \
+RUN pip3 install -U setuptools && \
     apt-get install -y python3-venv && \
     pip3 install virtualenv && \
     pip3 install pipenv && \
