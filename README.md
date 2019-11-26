@@ -15,9 +15,7 @@ Check whether the driver is installed and its version:
 nvidia-smi
 ```
 
-To install the latest NVIDIA driver execute `utils/install_nvidia_410.sh`.
-
-If the installation succeeds, the GPU list will be shown.
+To install the latest NVIDIA driver execute `utils/install_nvidia_430.sh` and reboot.
 
 # Docker
 To install Docker and NVIDIA-docker2 execute `utils/install_docker.sh`.
