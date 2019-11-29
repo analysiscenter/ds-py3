@@ -15,7 +15,7 @@ Check whether the driver is installed and its version:
 nvidia-smi
 ```
 
-To install the latest NVIDIA driver execute `utils/install_nvidia_430.sh` and reboot.
+To install the latest NVIDIA driver execute `utils/install_nvidia_430_18.04.sh` for Ubuntu 18.04 or `utils/install_nvidia_430_16.04.sh` for Ubuntu 16.04 and reboot.
 
 # Docker
 To install Docker and NVIDIA-docker2 execute `utils/install_docker.sh`.
