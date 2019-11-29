@@ -156,7 +156,9 @@ RUN pip3 install jupyter && \
     jupyter labextension install @jupyterlab/github && \
     pip3 install ipywidgets && \
     jupyter nbextension enable --py --sys-prefix widgetsnbextension && \
-    jupyter labextension install @jupyter-widgets/jupyterlab-manager
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
+    jupyter labextension install plotlywidget && \
+    jupyter labextension install jupyterlab-plotly
 
 # install forked libraries
 RUN pip3 uninstall -y pillow && \
