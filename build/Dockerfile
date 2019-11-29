@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04
+FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
 ENV TF_VERSION=1.14
@@ -10,13 +10,15 @@ RUN apt-get update && \
         liblapack-dev libatlas-base-dev libopenblas-dev \
         zlib1g-dev liblzma-dev liblz4-dev libzstd-dev libsnappy-dev zip p7zip-full \
         libhdf5-dev libedit-dev \
-        libzmq-dev \
+        libzmq3-dev \
         git wget tmux nano sysstat htop mc \
-        python3-pip python3-dev
+        python3-pip python3-dev && \
+    pip3 install -U pip && \
+    hash -r pip3
 
 # update CMake
 RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add - && \
-    apt-add-repository 'deb https://apt.kitware.com/ubuntu/ xenial main' && \
+    apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main' && \
     apt-get update && \
     apt-get install cmake -y
 
@@ -26,17 +28,18 @@ RUN apt-get install -y language-pack-ru && \
     echo ru_RU.UTF-8 UTF-8 >> /var/lib/locales/supported.d/local
 
 ENV LC_CTYPE=ru_RU.UTF-8
+ENV PIP_NO_CACHE_DIR=true
 
 # install python packages
-RUN pip3 install -U pip && \ 
-    hash -r pip3 && \
-    pip3 install -U setuptools && \
+RUN pip3 install -U setuptools && \
     apt-get install -y python3-venv && \
     pip3 install virtualenv && \
     pip3 install pipenv && \
     pip3 install pipreqs && \
     pip3 install cython && \
     pip3 install toolz && \
+    pip3 install fsspec && \
+    pip3 install cloudpickle && \
     pip3 install dill && \
     pip3 install fastcache && \
     pip3 install python-snappy && \
@@ -64,17 +67,17 @@ RUN pip3 install -U pip && \
 
 # install LLVM and Numba
 RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
-    apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-7 main" && \
+    apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-8 main" && \
     apt-get update && \
-    apt-get install -y llvm-7 && \
-    ln -s /usr/bin/llvm-config-7 /usr/bin/llvm-config && \
+    apt-get install -y llvm-8 && \
+    ln -s /usr/bin/llvm-config-8 /usr/bin/llvm-config && \
     pip3 install llvmlite && \
     pip3 install numba
 
 # install data manipulation packages
 RUN pip3 install numpy && \
     pip3 install bottleneck && \
-    pip3 install numexpr && \ 
+    pip3 install numexpr && \
     pip3 install tables && \
     pip3 install h5py && \
     pip3 install pandas && \
@@ -153,7 +156,9 @@ RUN pip3 install jupyter && \
     jupyter labextension install @jupyterlab/github && \
     pip3 install ipywidgets && \
     jupyter nbextension enable --py --sys-prefix widgetsnbextension && \
-    jupyter labextension install @jupyter-widgets/jupyterlab-manager
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
+    jupyter labextension install plotlywidget && \
+    jupyter labextension install jupyterlab-plotly
 
 # install forked libraries
 RUN pip3 uninstall -y pillow && \

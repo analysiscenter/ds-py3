@@ -10,7 +10,7 @@ port=${DS_PORT:-8888}
 image=${DS_IMAGE:-analysiscenter1/ds-py3}
 
 
-sudo docker run --runtime=nvidia --rm -p ${port}:8888 \
+sudo docker run --gpus all --rm -p ${port}:8888 \
   -v ${notebooks_vol}:/notebooks \
   -v ${data_vol}:/data \
   -v ${config_vol}:/jupyter/config \
