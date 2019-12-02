@@ -4,13 +4,13 @@ on:
   pull_request:
     types: [closed]
     branches: cpu
-    
+
 jobs:
 
   build-push:
- 
+
     runs-on: ubuntu-latest
-  
+
     steps:
     - uses: actions/checkout@v1
 
@@ -19,5 +19,5 @@ jobs:
 
     - name: Push
       run: |
-        docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASS }}
+        echo ${{ secrets.DOCKER_HUB_PASS }} | docker login -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin
         docker push analysiscenter1/ds-py3:cpu
