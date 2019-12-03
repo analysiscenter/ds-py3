@@ -1,6 +1,8 @@
 FROM ubuntu:18.04
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
+ENV TF_VERSION=1.15
+
 # install system packages
 RUN apt-get update && \
     apt-get install -y pkg-config software-properties-common build-essential cmake gfortran \
@@ -119,7 +121,7 @@ RUN pip3 install SimpleITK && \
 # increase counter to rebuild the image if some library changes
 ENV UPDATE_DL 1
 # install deep learning libraries
-RUN pip3 install tensorflow && \
+RUN pip3 install tensorflow==$TF_VERSION && \
     pip3 install --no-deps keras && \
     pip3 install --no-deps edward && \
     pip3 install torch torchvision torchtext && \
