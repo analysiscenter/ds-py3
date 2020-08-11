@@ -11,8 +11,9 @@ RUN apt-get update && \
         zlib1g-dev liblzma-dev liblz4-dev libzstd-dev libsnappy-dev zip p7zip-full \
         libhdf5-dev libedit-dev \
         libzmq3-dev \
-        git wget tmux nano sysstat htop mc \
+        git git-lfs wget tmux nano sysstat htop mc tree \
         python3-pip python3-dev && \
+    git lfs install && \
     pip3 install -U pip && \
     hash -r pip3
 
@@ -57,6 +58,7 @@ RUN pip3 install -U setuptools && \
     pip3 install pytest-cov && \
     pip3 install tox && \
     pip3 install autopep8 && \
+    pip3 install cookiecutter && \
     pip3 install -U pylint
 
 # install LLVM and Numba
@@ -74,10 +76,13 @@ RUN pip3 install numpy && \
     pip3 install numexpr && \
     pip3 install tables && \
     pip3 install h5py && \
+    pip3 install h5pickle && \
     pip3 install pandas && \
     pip3 install feather-format && \
     pip3 install fastparquet && \
     pip3 install dask && \
+    pip3 install pint && \
+    pip3 install 'dvc[all]' && \
     pip3 install python-dateutil
 
 # install stats and ML libraries
@@ -172,3 +177,4 @@ WORKDIR /notebooks
 
 ENTRYPOINT ["/bin/sh", "-c"]
 CMD ["start-notebook.sh"]
+
