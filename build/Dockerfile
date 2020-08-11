@@ -148,9 +148,6 @@ RUN pip3 install jupyter && \
     pip3 install jupyterhub && \
     pip3 install -U nbdime && \
     nbdime extensions --enable && \
-    jupyter labextension install @jupyterlab/git && \
-    pip3 install --upgrade jupyterlab-git && \
-    jupyter serverextension enable --py jupyterlab_git && \
     jupyter labextension install @jupyterlab/toc && \
     jupyter labextension install @jupyterlab/github && \
     pip3 install ipywidgets && \
