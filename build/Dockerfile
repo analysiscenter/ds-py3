@@ -1,7 +1,7 @@
 FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
-ENV TF_VERSION=1.14
+ENV TF_VERSION=1.15
 
 # install system packages
 RUN apt-get update && \
@@ -11,8 +11,9 @@ RUN apt-get update && \
         zlib1g-dev liblzma-dev liblz4-dev libzstd-dev libsnappy-dev zip p7zip-full \
         libhdf5-dev libedit-dev \
         libzmq3-dev \
-        git wget tmux nano sysstat htop mc \
+        git git-lfs wget tmux nano sysstat htop mc tree \
         python3-pip python3-dev && \
+    git lfs install && \
     pip3 install -U pip && \
     hash -r pip3
 
@@ -63,6 +64,7 @@ RUN pip3 install -U setuptools && \
     pip3 install pytest-cov && \
     pip3 install tox && \
     pip3 install autopep8 && \
+    pip3 install cookiecutter && \
     pip3 install -U pylint
 
 # install LLVM and Numba
@@ -80,10 +82,13 @@ RUN pip3 install numpy && \
     pip3 install numexpr && \
     pip3 install tables && \
     pip3 install h5py && \
+    pip3 install h5pickle && \
     pip3 install pandas && \
     pip3 install feather-format && \
     pip3 install fastparquet && \
     pip3 install dask && \
+    pip3 install pint && \
+    pip3 install 'dvc[all]' && \
     pip3 install python-dateutil
 
 # install stats and ML libraries
@@ -149,9 +154,6 @@ RUN pip3 install jupyter && \
     pip3 install jupyterhub && \
     pip3 install -U nbdime && \
     nbdime extensions --enable && \
-    jupyter labextension install @jupyterlab/git && \
-    pip3 install --upgrade jupyterlab-git && \
-    jupyter serverextension enable --py jupyterlab_git && \
     jupyter labextension install @jupyterlab/toc && \
     jupyter labextension install @jupyterlab/github && \
     pip3 install ipywidgets && \
@@ -178,3 +180,4 @@ WORKDIR /notebooks
 
 ENTRYPOINT ["/bin/sh", "-c"]
 CMD ["start-notebook.sh"]
+
