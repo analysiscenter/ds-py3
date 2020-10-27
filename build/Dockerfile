@@ -1,7 +1,5 @@
-FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
+FROM nvcr.io/nvidia/pytorch:20.09-py3
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
-
-ENV TF_VERSION=1.15
 
 # install system packages
 RUN apt-get update && \
@@ -11,11 +9,8 @@ RUN apt-get update && \
         zlib1g-dev liblzma-dev liblz4-dev libzstd-dev libsnappy-dev zip p7zip-full \
         libhdf5-dev libedit-dev \
         libzmq3-dev \
-        git git-lfs wget tmux nano sysstat htop mc tree \
-        python3-pip python3-dev && \
-    git lfs install && \
-    pip3 install -U pip && \
-    hash -r pip3
+        git git-lfs wget tmux nano sysstat htop mc tree && \
+    git lfs install
 
 # update CMake
 RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add - && \
@@ -132,35 +127,10 @@ RUN pip3 install SimpleITK && \
 # increase counter to rebuild the image if some library changes
 ENV UPDATE_DL 1
 # install deep learning libraries
-RUN pip3 install tensorflow-gpu==$TF_VERSION && \
+RUN pip3 install tensorflow && \
     pip3 install --no-deps keras && \
     pip3 install --no-deps edward && \
-    pip3 install torch torchvision torchtext && \
     pip3 install pyro-ppl
-
-# install nodejs and npm
-RUN apt-get install -y curl && \
-    curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
-    apt-get install -y nodejs
-
-# install jupyter and extensions
-WORKDIR /jupyter/config
-WORKDIR /jupyter/secret
-RUN pip3 install jupyter && \
-    pip3 install jupyterlab && \
-    pip3 install jupyter_contrib_nbextensions && \
-    jupyter contrib nbextension install --system && \
-    pip3 install ipyvolume && \
-    pip3 install jupyterhub && \
-    pip3 install -U nbdime && \
-    nbdime extensions --enable && \
-    jupyter labextension install @jupyterlab/toc && \
-    jupyter labextension install @jupyterlab/github && \
-    pip3 install ipywidgets && \
-    jupyter nbextension enable --py --sys-prefix widgetsnbextension && \
-    jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
-    jupyter labextension install plotlywidget && \
-    jupyter labextension install jupyterlab-plotly
 
 # install forked libraries
 RUN pip3 uninstall -y pillow && \
