@@ -129,7 +129,7 @@ RUN pip3 install SimpleITK && \
 # increase counter to rebuild the image if some library changes
 ENV UPDATE_DL 1
 # install deep learning libraries
-RUN pip3 install tensorflow && \
+RUN pip3 install tf-nightly-gpu && \
     pip3 install --no-deps keras && \
     pip3 install --no-deps edward && \
     pip3 install pyro-ppl
