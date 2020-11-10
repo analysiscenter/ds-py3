@@ -10,4 +10,4 @@ sudo mkdir /data
 rm -rf ../run/data
 ln -s /data ../run/data
 
-sudo docker pull analysiscenter1/ds-py3:cpu
+sudo docker pull analysiscenter1/ds-py3:torch1.6-tf1.15-cpu
