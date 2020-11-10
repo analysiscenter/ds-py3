@@ -7,7 +7,7 @@ data_vol=${DS_DATA_DIR:-`pwd`/data}
 config_vol=${DS_CONFIG_DIR:-`pwd`/config}
 secret_vol=${DS_SECRET_DIR:-`pwd`/secret}
 port=${DS_PORT:-8888}
-image=${DS_IMAGE:-analysiscenter1/ds-py3}
+image=${DS_IMAGE:-analysiscenter1/ds-py3:torch1.6-tf1.15}
 
 
 sudo docker run --gpus all --rm -p ${port}:8888 \
