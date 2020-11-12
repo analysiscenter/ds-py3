@@ -130,8 +130,6 @@ RUN pip3 install SimpleITK && \
 ENV UPDATE_DL 1
 # install deep learning libraries
 RUN pip3 install tf-nightly-gpu && \
-    pip3 install --no-deps keras && \
-    pip3 install --no-deps edward && \
     pip3 install pyro-ppl
 
 # install forked libraries
