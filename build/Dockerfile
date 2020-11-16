@@ -10,7 +10,9 @@ RUN apt-get update && \
         libhdf5-dev libedit-dev \
         libzmq3-dev \
         git git-lfs wget tmux nano sysstat htop mc tree unzip && \
-    git lfs install
+    git lfs install && \
+    pip3 install -U pip && \
+    hash -r pip3
 
 # update CMake
 RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add - && \
