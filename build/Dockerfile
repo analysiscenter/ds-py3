@@ -138,9 +138,6 @@ RUN rm -rf /opt/conda/lib/python3.6/site-packages/ruamel* && \
     pip3 install ruamel-yaml --force-reinstall && \
     pip3 install 'dvc[ssh]'
 
-# update jupyterlab
-RUN pip3 install -U jupyter
-
 # install docker
 RUN wget https://get.docker.com -q -O /tmp/getdocker && \
     chmod +x /tmp/getdocker && \
