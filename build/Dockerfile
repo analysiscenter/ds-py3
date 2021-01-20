@@ -28,6 +28,10 @@ RUN apt-get install -y language-pack-ru && \
 ENV LC_CTYPE=ru_RU.UTF-8
 ENV PIP_NO_CACHE_DIR=true
 
+# workaround to update numba
+RUN rm -rf /opt/conda/lib/python3.6/site-packages/llvmlite* && \
+    pip3 install -U numba
+
 # install python packages
 RUN pip3 install -U setuptools && \
     apt-get install -y python3-venv && \
@@ -64,15 +68,6 @@ RUN pip3 install -U setuptools && \
     pip3 install cookiecutter && \
     pip3 install -U pylint
 
-# install LLVM and Numba
-RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
-    apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-8 main" && \
-    apt-get update && \
-    apt-get install -y llvm-8 && \
-    ln -s /usr/bin/llvm-config-8 /usr/bin/llvm-config && \
-    pip3 install llvmlite && \
-    pip3 install numba
-
 # install data manipulation packages
 RUN pip3 install numpy && \
     pip3 install bottleneck && \
@@ -103,9 +98,9 @@ RUN pip3 install scipy && \
 # install image libraries
 RUN apt-get install -y graphviz libfreetype6-dev libpng-dev libjpeg-dev && \
     pip3 install graphviz && \
-    pip3 install opencv-python &&\
+    pip3 install -U opencv-python &&\
     pip3 install matplotlib && \
-    pip3 install scikit-image && \
+    pip3 install -U scikit-image && \
     pip3 install imageio && \
     pip3 install seaborn && \
     pip3 install ggplot && \
