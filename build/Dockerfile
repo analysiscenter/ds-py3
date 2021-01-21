@@ -123,8 +123,6 @@ RUN pip3 install SimpleITK && \
     pip3 install fpdf && \
     pip3 install -U sphinx
 
-# increase counter to rebuild the image if some library changes
-ENV UPDATE_DL 1
 # install deep learning libraries
 RUN pip3 install tf-nightly-gpu && \
     pip3 install pyro-ppl
@@ -143,10 +141,7 @@ RUN wget https://get.docker.com -q -O /tmp/getdocker && \
     chmod +x /tmp/getdocker && \
     sh /tmp/getdocker
 
-# increase counter to rebuild the image if start files change
-ENV UPDATE_CMD 1
 COPY start-notebook.sh /usr/local/bin/start-notebook.sh
-COPY start-singleuser.sh /usr/local/bin/start-singleuser.sh
 
 WORKDIR /notebooks
 
