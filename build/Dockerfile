@@ -123,12 +123,8 @@ RUN pip3 install SimpleITK && \
     pip3 install lasio && \
     pip3 install xlrd
 
-# increase counter to rebuild the image if some library changes
-ENV UPDATE_DL 1
 # install deep learning libraries
 RUN pip3 install tensorflow==$TF_VERSION && \
-    pip3 install --no-deps keras && \
-    pip3 install --no-deps edward && \
     pip3 install torch torchvision torchtext && \
     pip3 install pyro-ppl
 
@@ -165,10 +161,7 @@ RUN wget https://get.docker.com -q -O /tmp/getdocker && \
     chmod +x /tmp/getdocker && \
     sh /tmp/getdocker
 
-# increase counter to rebuild the image if start files change
-ENV UPDATE_CMD 1
 COPY start-notebook.sh /usr/local/bin/start-notebook.sh
-COPY start-singleuser.sh /usr/local/bin/start-singleuser.sh
 
 WORKDIR /notebooks
 
