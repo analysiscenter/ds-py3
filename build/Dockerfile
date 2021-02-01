@@ -9,6 +9,7 @@ RUN apt-get update && \
         zlib1g-dev liblzma-dev liblz4-dev libzstd-dev libsnappy-dev zip p7zip-full \
         libhdf5-dev libedit-dev \
         libzmq3-dev \
+        lib libgl1-mesa-glx \
         git git-lfs wget tmux nano sysstat htop mc tree unzip && \
     git lfs install && \
     pip3 install -U pip && \
@@ -80,7 +81,8 @@ RUN pip3 install numpy && \
     pip3 install fastparquet && \
     pip3 install dask && \
     pip3 install pint && \
-    pip3 install python-dateutil
+    pip3 install python-dateutil && \
+    pip3 install cupy
 
 # install stats and ML libraries
 RUN pip3 install scipy && \
@@ -136,6 +138,33 @@ RUN rm -rf /opt/conda/lib/python3.6/site-packages/ruamel* && \
     pip3 install ruamel-yaml --force-reinstall && \
     pip3 install 'dvc[ssh]'
 
+# remove `src` package
+RUN rm -rf /opt/conda/lib/python3.6/site-packages/src
+
+# install nodejs and npm
+RUN apt-get install -y curl && \
+    curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+    apt-get install -y nodejs
+
+# install jupyter and extensions
+WORKDIR /jupyter/config
+WORKDIR /jupyter/secret
+RUN pip3 install jupyter && \
+    pip3 install jupyterlab==2.2.4 && \
+    pip3 install jupyter_contrib_nbextensions && \
+    jupyter contrib nbextension install --system && \
+    pip3 install ipyvolume && \
+    pip3 install jupyterhub && \
+    pip3 install -U nbdime && \
+    nbdime extensions --enable && \
+    jupyter labextension install @jupyterlab/toc && \
+    jupyter labextension install @jupyterlab/github && \
+    pip3 install ipywidgets && \
+    jupyter nbextension enable --py --sys-prefix widgetsnbextension && \
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
+    jupyter labextension install plotlywidget && \
+    jupyter labextension install jupyterlab-plotly
+
 # install docker
 RUN wget https://get.docker.com -q -O /tmp/getdocker && \
     chmod +x /tmp/getdocker && \
@@ -147,4 +176,3 @@ WORKDIR /notebooks
 
 ENTRYPOINT ["/bin/sh", "-c"]
 CMD ["start-notebook.sh"]
-
