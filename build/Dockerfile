@@ -9,7 +9,7 @@ RUN apt-get update && \
         zlib1g-dev liblzma-dev liblz4-dev libzstd-dev libsnappy-dev zip p7zip-full \
         libhdf5-dev libedit-dev \
         libzmq3-dev \
-        lib libgl1-mesa-glx \
+        libgl1-mesa-glx \
         git git-lfs wget tmux nano sysstat htop mc tree unzip && \
     git lfs install && \
     pip3 install -U pip && \
