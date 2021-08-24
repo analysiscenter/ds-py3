@@ -13,6 +13,9 @@ You need [docker](https://docs.docker.com/engine/installation/linux/), [GPU driv
 
 Before running a container you might set some env variables:
 
+### DS_NAME
+default: `ds-py3`
+
 ### DS_NOTEBOOKS_DIR
 default: `./notebooks`
 
