@@ -73,8 +73,7 @@ RUN pip3 install -U setuptools && \
     pip3 install -U pylint
 
 # install data manipulation packages
-RUN pip3 install -U numpy && \
-    pip3 install -U bottleneck && \
+RUN pip3 install -U bottleneck && \
     pip3 install -U numexpr && \
     pip3 install -U tables && \
     pip3 install -U h5py && \
@@ -112,7 +111,8 @@ RUN apt install -y graphviz libfreetype6-dev libpng-dev libjpeg-dev && \
     pip3 install -U bokeh && \
     pip3 install -U folium && \
     pip3 install -U vispy && \
-    pip3 install -U plotly
+    pip3 install -U plotly && \
+    pip3 install -U ipympl
 
 # install special packages
 RUN pip3 install -U SimpleITK && \
@@ -129,13 +129,17 @@ RUN pip3 install -U SimpleITK && \
     pip3 install -U gpustat
 
 # install deep learning libraries
-RUN pip3 install -U tensorflow && \
-    pip3 install -U pyro-ppl && \
-    pip3 install -U einops
+RUN pip3 install -U pyro-ppl && \
+    pip3 install -U einops && \
+    pip3 install -U tensorflow
 
 # workaround to update numba
 RUN rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/llvmlite* && \
     pip3 install -U numba
+
+# Numpy 1.20.3 version is required for numba and pytorch to work
+# Tensorflow requires 1.19, but still works with 1.20.
+RUN pip3 install numpy==1.20.3
 
 # install nodejs and npm
 RUN apt install -y curl && \
@@ -145,19 +149,9 @@ RUN apt install -y curl && \
 # install jupyter and extensions
 WORKDIR /jupyter/config
 WORKDIR /jupyter/secret
-RUN pip3 install -U jupyter_contrib_nbextensions && \
-    jupyter contrib nbextension install --system && \
-    pip3 install -U ipyvolume && \
-    pip3 install -U jupyterhub && \
+RUN pip3 install -U jupyterlab && \
     pip3 install -U nbdime && \
-    nbdime extensions --enable && \
-    jupyter labextension install @jupyterlab/toc && \
-    jupyter labextension install @jupyterlab/github && \
-    pip3 install -U ipywidgets && \
-    jupyter nbextension enable --py --sys-prefix widgetsnbextension && \
-    jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
-    jupyter labextension install plotlywidget && \
-    jupyter labextension install jupyterlab-plotly
+    nbdime extensions --enable
 
 # install docker
 RUN wget https://get.docker.com -q -O /tmp/getdocker && \
