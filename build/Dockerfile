@@ -158,6 +158,9 @@ RUN wget https://get.docker.com -q -O /tmp/getdocker && \
     chmod +x /tmp/getdocker && \
     sh /tmp/getdocker
 
+# add short alias for gpustat
+RUN echo "alias gtop='gpustat -i 0.2'" >> ~/.bashrc
+
 COPY start-notebook.sh /usr/local/bin/start-notebook.sh
 
 WORKDIR /notebooks
