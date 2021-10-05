@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:21.07-py3
+FROM nvcr.io/nvidia/pytorch:21.09-py3
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
 # required to prevent interactions while installing packages (e.g. software-properties-common)
@@ -11,10 +11,7 @@ RUN apt update && \
         liblapack-dev libatlas-base-dev libopenblas-dev \
         zlib1g-dev liblzma-dev liblz4-dev libzstd-dev libsnappy-dev zip p7zip-full \
         libhdf5-dev libedit-dev libzmq3-dev  libgl1-mesa-glx \
-        wget tmux nano sysstat htop mc tree unzip && \
-    # install latest git version
-    add-apt-repository -y ppa:git-core/ppa && \
-    apt-get update && \
+        wget tmux nano sysstat htop mc tree unzip ca-certificates && \
     apt install -y git git-lfs && \
     git lfs install && \
     pip3 install -U pip && \
@@ -137,8 +134,9 @@ RUN pip3 install -U pyro-ppl && \
 RUN rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/llvmlite* && \
     pip3 install -U numba
 
-# Numpy 1.20.3 version is required for numba and pytorch to work
-# Tensorflow requires 1.19, but still works with 1.20.
+# review this on next iteration:
+# torch requires numpy >= 1.20, numba - numpy < 1.21
+# numpy 1.20 is a compromise  for both to work
 RUN pip3 install numpy==1.20.3
 
 # install nodejs and npm
