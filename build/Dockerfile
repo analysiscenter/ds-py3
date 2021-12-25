@@ -149,6 +149,7 @@ WORKDIR /jupyter/config
 WORKDIR /jupyter/secret
 RUN pip3 install -U jupyterlab && \
     pip3 install -U nbdime && \
+    pip3 install -U jupyterlab_execute_time && \
     nbdime extensions --enable
 
 # install docker
