@@ -15,6 +15,8 @@ docker run \
   --name ${name} --gpus all --pid=host --rm \
   -d \
   -p ${port}:8888 \
+  -p 8887:8887 \
+  -p 8886:22 \
   -p 8080:8080 \
   -v ${notebooks_vol}:/notebooks \
   -v ${data_vol}:/data \

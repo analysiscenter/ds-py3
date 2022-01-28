@@ -21,8 +21,8 @@
         "insertSpaces": true,
         "matchBrackets": true,
         "autoClosingBrackets": true,
-        "rulers": [],
+        "rulers": [120],
         "codeFolding": false,
-        "showTrailingSpace": false
+        "showTrailingSpace": true
     }
 }
