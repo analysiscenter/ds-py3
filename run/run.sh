@@ -16,8 +16,8 @@ docker run \
   -d \
   -p ${port}:8888 \
   -p 8887:8887 \
-  -p 8886:22 \
-  -p 8080:8080 \
+  -p 8886:8886 \
+  -p 8885:8885 \
   -v ${notebooks_vol}:/notebooks \
   -v ${data_vol}:/data \
   -v ${config_vol}:/jupyter/config \
