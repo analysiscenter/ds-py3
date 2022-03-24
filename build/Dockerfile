@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:22.02-py3
+FROM nvcr.io/nvidia/pytorch:21.12-py3
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
 # required to prevent interactions while installing packages (e.g. software-properties-common)
@@ -142,11 +142,6 @@ RUN pip3 install -U jupyterlab && \
     pip3 install -U nbdime && \
     pip3 install -U jupyterlab_execute_time && \
     nbdime extensions --enable
-
-# install docker
-RUN wget https://get.docker.com -q -O /tmp/getdocker && \
-    chmod +x /tmp/getdocker && \
-    sh /tmp/getdocker
 
 # add short alias for gpustat
 RUN echo "alias gtop='gpustat -i 0.2'" >> ~/.bashrc
