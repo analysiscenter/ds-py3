@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:21.12-py3
+FROM nvcr.io/nvidia/pytorch:22.05-py3
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
 # required to prevent interactions while installing packages (e.g. software-properties-common)
@@ -31,6 +31,9 @@ RUN apt install -y language-pack-ru && \
 
 ENV LC_CTYPE=ru_RU.UTF-8
 ENV PIP_NO_CACHE_DIR=true
+
+# install this library first since following installations with pip might break conda
+RUN conda install -c gimli pygimli
 
 # install python packages
 RUN pip3 install -U setuptools && \
