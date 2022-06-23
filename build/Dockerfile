@@ -58,6 +58,7 @@ RUN pip3 install -U setuptools && \
     pip3 install -U requests && \
     pip3 install -U multiprocess && \
     pip3 install -U psutil && \
+    pip3 install -U tbb && \
     pip3 install -U eventlet && \
     pip3 install -U greenlet && \
     pip3 install -U aiohttp && \
