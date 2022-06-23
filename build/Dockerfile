@@ -32,8 +32,10 @@ RUN apt install -y language-pack-ru && \
 ENV LC_CTYPE=ru_RU.UTF-8
 ENV PIP_NO_CACHE_DIR=true
 
-# install this library first since following installations with pip might break conda
-RUN conda install -c gimli pygimli
+# install gimli first since following pip installations might break conda
+# mamba is required to speed up the dependencies check
+RUN conda install -c conda-forge -y mamba && \
+    mamba install -c gimli -y pygimli
 
 # install python packages
 RUN pip3 install -U setuptools && \
