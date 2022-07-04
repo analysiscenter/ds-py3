@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:22.05-py3
+FROM nvcr.io/nvidia/pytorch:22.06-py3
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
 # required to prevent interactions while installing packages (e.g. software-properties-common)
@@ -105,7 +105,6 @@ RUN pip3 install -U scipy && \
 # install image libraries
 RUN apt install -y graphviz libfreetype6-dev libpng-dev libjpeg-dev && \
     pip3 install -U graphviz && \
-    pip3 install -U opencv-python &&\
     pip3 install -U matplotlib && \
     pip3 install -U scikit-image && \
     pip3 install -U imageio && \
@@ -131,6 +130,10 @@ RUN pip3 install -U PyWavelets && \
 RUN pip3 install -U pyro-ppl && \
     pip3 install -U einops && \
     pip3 install -U tensorflow
+
+# workaround to update opencv
+RUN rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/opencv* && \
+    pip3 install -U opencv-python
 
 # workaround to update numba
 RUN rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/llvmlite* && \

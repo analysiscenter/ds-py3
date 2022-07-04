@@ -11,9 +11,8 @@ port=${DS_PORT:-8888}
 image=${DS_IMAGE:-analysiscenter1/ds-py3}
 
 
-docker run \
-  --name ${name} --gpus all --pid=host --rm \
-  -d \
+docker run -d --rm --name ${name} \
+  --gpus all --pid=host --shm-size=8G \
   -p ${port}:8888 \
   -p 8887:8887 \
   -p 8886:8886 \
