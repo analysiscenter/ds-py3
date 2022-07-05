@@ -133,6 +133,7 @@ RUN pip3 install -U pyro-ppl && \
 
 # workaround to update opencv
 RUN rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/opencv* && \
+    rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/cv2 && \
     pip3 install -U opencv-python
 
 # workaround to update numba
