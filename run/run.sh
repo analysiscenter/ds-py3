@@ -9,14 +9,19 @@ config_vol=${DS_CONFIG_DIR:-`pwd`/config}
 secret_vol=${DS_SECRET_DIR:-`pwd`/secret}
 port=${DS_PORT:-8888}
 image=${DS_IMAGE:-analysiscenter1/ds-py3}
+extra_ports=${DS_EXTRA_PORTS:-2}
 
+ports=""
+if (( extra_ports>0 )); then
+    for i in $(seq 1 $extra_ports); do
+        ports+="-p $((port+i)):$((port+i)) "
+    done
+fi
 
 docker run -d --rm --name ${name} \
   --gpus all --pid=host --shm-size=8G \
   -p ${port}:8888 \
-  -p 8887:8887 \
-  -p 8886:8886 \
-  -p 8885:8885 \
+  ${ports} \
   -v ${notebooks_vol}:/notebooks \
   -v ${data_vol}:/data \
   -v ${config_vol}:/jupyter/config \
