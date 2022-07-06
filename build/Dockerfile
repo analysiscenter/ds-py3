@@ -140,17 +140,13 @@ RUN rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/o
 RUN rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/llvmlite* && \
     pip3 install -U numba
 
-# install nodejs and npm
-RUN apt install -y curl && \
-    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
-    apt install -y nodejs
-
 # install jupyter and extensions
 WORKDIR /jupyter/config
 WORKDIR /jupyter/secret
-RUN pip3 install -U jupyterlab && \
-    pip3 install -U nbdime && \
-    pip3 install -U jupyterlab_execute_time && \
+RUN conda install -c conda-forge nodejs && \
+    conda install jupyterlab -y && \
+    conda install -c conda-forge jupyterlab_execute_time -y && \
+    conda install -c conda-forge nbdime && \
     nbdime extensions --enable
 
 # add short alias for gpustat
