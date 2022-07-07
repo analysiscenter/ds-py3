@@ -12,9 +12,9 @@ image=${DS_IMAGE:-analysiscenter1/ds-py3}
 extra_ports=${DS_EXTRA_PORTS:-2}
 
 ports=""
-if (( extra_ports>0 )); then
+if [ $extra_ports -gt 0 ]; then
     for i in $(seq 1 $extra_ports); do
-        ports+="-p $((port+i)):$((port+i)) "
+        ports="$ports-p $((port+i)):$((port+i)) "
     done
 fi
 
