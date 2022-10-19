@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:22.06-py3
+FROM nvcr.io/nvidia/pytorch:22.09-py3
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
 # required to prevent interactions while installing packages (e.g. software-properties-common)
@@ -73,7 +73,8 @@ RUN pip3 install -U setuptools && \
     pip3 install -U autopep8 && \
     pip3 install -U cookiecutter && \
     pip3 install -U tqdm && \
-    pip3 install -U pylint
+    pip3 install -U pylint && \
+    pip3 install -U connected-components-3d
 
 # install data manipulation packages
 RUN pip3 install -U numpy && \
@@ -82,6 +83,7 @@ RUN pip3 install -U numpy && \
     pip3 install -U tables && \
     pip3 install -U h5py && \
     pip3 install -U h5pickle && \
+    pip3 install -U hdf5plugin && \
     pip3 install -U pandas && \
     pip3 install -U feather-format && \
     pip3 install -U fastparquet && \
