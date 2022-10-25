@@ -139,10 +139,10 @@ RUN rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/l
 # install jupyter and extensions
 WORKDIR /jupyter/config
 WORKDIR /jupyter/secret
-RUN conda install -c conda-forge nodejs && \
+RUN conda install -c conda-forge nodejs -y && \
     conda install jupyterlab -y && \
     conda install -c conda-forge jupyterlab_execute_time -y && \
-    conda install -c conda-forge nbdime && \
+    conda install -c conda-forge nbdime -y && \
     nbdime extensions --enable
 
 # add short alias for gpustat
