@@ -125,7 +125,7 @@ RUN pip3 install -U PyWavelets && \
 
 # install deep learning libraries
 RUN pip3 install -U pyro-ppl && \
-    pip3 install -U einops && \
+    pip3 install -U einops
 
 # workaround to update opencv
 RUN rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/opencv* && \
