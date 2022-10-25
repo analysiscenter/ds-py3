@@ -32,11 +32,6 @@ RUN apt install -y language-pack-ru && \
 ENV LC_CTYPE=ru_RU.UTF-8
 ENV PIP_NO_CACHE_DIR=true
 
-# install gimli first since following pip installations might break conda
-# mamba is required to speed up the dependencies check
-RUN conda install -c conda-forge -y mamba && \
-    mamba install -c gimli -y pygimli
-
 # install python packages
 RUN pip3 install -U setuptools && \
     apt install -y python3-venv && \
@@ -114,7 +109,7 @@ RUN apt install -y graphviz libfreetype6-dev libpng-dev libjpeg-dev && \
     pip3 install -U folium && \
     pip3 install -U vispy && \
     pip3 install -U plotly && \
-    pip3 install -U ipympl==0.7.0
+    pip3 install -U ipympl
 
 # install special packages
 RUN pip3 install -U PyWavelets && \
@@ -131,7 +126,6 @@ RUN pip3 install -U PyWavelets && \
 # install deep learning libraries
 RUN pip3 install -U pyro-ppl && \
     pip3 install -U einops && \
-    pip3 install -U tensorflow
 
 # workaround to update opencv
 RUN rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/opencv* && \
