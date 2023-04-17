@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:22.09-py3
+FROM nvcr.io/nvidia/pytorch:23.03-py3
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
 # required to prevent interactions while installing packages (e.g. software-properties-common)
@@ -16,7 +16,6 @@ RUN apt update && \
     git lfs install && \
     pip3 install -U pip && \
     hash -r pip3
-
 
 # update CMake
 RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add - && \
@@ -54,6 +53,7 @@ RUN pip3 install -U setuptools && \
     pip3 install -U multiprocess && \
     pip3 install -U psutil && \
     pip3 install -U tbb && \
+    pip3 install -U numba && \
     pip3 install -U eventlet && \
     pip3 install -U greenlet && \
     pip3 install -U aiohttp && \
@@ -73,6 +73,7 @@ RUN pip3 install -U setuptools && \
 
 # install data manipulation packages
 RUN pip3 install -U numpy && \
+    pip3 install -U zarr && \
     pip3 install -U bottleneck && \
     pip3 install -U numexpr && \
     pip3 install -U tables && \
@@ -109,7 +110,8 @@ RUN apt install -y graphviz libfreetype6-dev libpng-dev libjpeg-dev && \
     pip3 install -U folium && \
     pip3 install -U vispy && \
     pip3 install -U plotly && \
-    pip3 install -U ipympl
+    pip3 install -U ipympl && \
+    pip3 install -U opencv-python
 
 # install special packages
 RUN pip3 install -U PyWavelets && \
@@ -124,25 +126,15 @@ RUN pip3 install -U PyWavelets && \
     pip3 install -U batchflow
 
 # install deep learning libraries
-RUN pip3 install -U pyro-ppl && \
-    pip3 install -U einops
-
-# workaround to update opencv
-RUN rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/opencv* && \
-    rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/cv2 && \
-    pip3 install -U opencv-python
-
-# workaround to update numba
-RUN rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/llvmlite* && \
-    pip3 install -U numba
+RUN pip3 install -U einops
 
 # install jupyter and extensions
 WORKDIR /jupyter/config
 WORKDIR /jupyter/secret
-RUN conda install -c conda-forge nodejs -y && \
-    conda install jupyterlab -y && \
-    conda install -c conda-forge jupyterlab_execute_time -y && \
-    conda install -c conda-forge nbdime -y && \
+RUN pip3 install -U nodejs && \
+    pip3 install -U jupyterlab && \
+    pip3 install -U jupyterlab_execute_time && \
+    pip3 install -U nbdime && \
     nbdime extensions --enable
 
 # add short alias for gpustat

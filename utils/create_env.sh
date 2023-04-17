@@ -9,5 +9,3 @@ ln -s /notebooks ../run/notebooks
 sudo mkdir -p /data
 rm -rf ../run/data
 ln -s /data ../run/data
-
-sudo docker pull analysiscenter1/ds-py3
