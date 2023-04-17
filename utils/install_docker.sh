@@ -24,6 +24,3 @@ sudo apt install -y nvidia-container-toolkit
 
 # reload the Docker daemon configuration
 sudo systemctl restart docker
-
- # Test nvidia-smi with the latest official CUDA image
-sudo docker run --gpus all --rm nvidia/cuda nvidia-smi

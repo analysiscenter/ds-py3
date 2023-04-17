@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:21.09-py3
+FROM nvcr.io/nvidia/pytorch:23.03-py3
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
 # required to prevent interactions while installing packages (e.g. software-properties-common)
@@ -16,7 +16,6 @@ RUN apt update && \
     git lfs install && \
     pip3 install -U pip && \
     hash -r pip3
-
 
 # update CMake
 RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add - && \
@@ -53,6 +52,8 @@ RUN pip3 install -U setuptools && \
     pip3 install -U requests && \
     pip3 install -U multiprocess && \
     pip3 install -U psutil && \
+    pip3 install -U tbb && \
+    pip3 install -U numba && \
     pip3 install -U eventlet && \
     pip3 install -U greenlet && \
     pip3 install -U aiohttp && \
@@ -67,22 +68,27 @@ RUN pip3 install -U setuptools && \
     pip3 install -U autopep8 && \
     pip3 install -U cookiecutter && \
     pip3 install -U tqdm && \
-    pip3 install -U pylint
+    pip3 install -U pylint && \
+    pip3 install -U connected-components-3d
 
 # install data manipulation packages
-RUN pip3 install -U bottleneck && \
+RUN pip3 install -U numpy && \
+    pip3 install -U zarr && \
+    pip3 install -U bottleneck && \
     pip3 install -U numexpr && \
     pip3 install -U tables && \
     pip3 install -U h5py && \
     pip3 install -U h5pickle && \
+    pip3 install -U hdf5plugin && \
     pip3 install -U pandas && \
     pip3 install -U feather-format && \
     pip3 install -U fastparquet && \
     pip3 install -U dask && \
     pip3 install -U pint && \
     pip3 install -U python-dateutil && \
-    pip3 install -U cupy && \
-    pip3 install -U 'dvc[ssh]'
+    pip3 install -U 'dvc[ssh]' && \
+    # Update existing CUDA-specific cupy library
+    pip3 install -U  $(pip3 list | grep cupy* | awk '{print $1}')
 
 # install stats and ML libraries
 RUN pip3 install -U scipy && \
@@ -90,71 +96,46 @@ RUN pip3 install -U scipy && \
     pip3 install -U sklearn-pandas && \
     pip3 install -U statsmodels && \
     pip3 install -U nltk && \
-    pip3 install -U hmmlearn && \
     pip3 install -U xgboost && \
-    pip3 install -U lightgbm && \
-    pip3 install -U ortools && \
-    pip3 install -U tdigest
+    pip3 install -U catboost && \
+    pip3 install -U lightgbm
 
 # install image libraries
 RUN apt install -y graphviz libfreetype6-dev libpng-dev libjpeg-dev && \
     pip3 install -U graphviz && \
-    pip3 install -U opencv-python &&\
     pip3 install -U matplotlib && \
     pip3 install -U scikit-image && \
     pip3 install -U imageio && \
     pip3 install -U seaborn && \
-    pip3 install -U ggplot && \
-    pip3 install -U bokeh && \
     pip3 install -U folium && \
     pip3 install -U vispy && \
     pip3 install -U plotly && \
-    pip3 install -U ipympl
+    pip3 install -U ipympl && \
+    pip3 install -U opencv-python
 
 # install special packages
-RUN pip3 install -U SimpleITK && \
-    pip3 install -U pydicom && \
-    pip3 install -U wfdb && \
-    pip3 install -U PyWavelets && \
-    pip3 install -U pyedflib && \
+RUN pip3 install -U PyWavelets && \
     pip3 install -U segyio && \
     pip3 install -U lasio && \
     pip3 install -U xlrd && \
     pip3 install -U nvidia-ml-py3 && \
     pip3 install -U fpdf && \
     pip3 install -U sphinx && \
-    pip3 install -U gpustat
+    pip3 install -U gpustat && \
+    pip3 install -U py-nbtools && \
+    pip3 install -U batchflow
 
 # install deep learning libraries
-RUN pip3 install -U pyro-ppl && \
-    pip3 install -U einops && \
-    pip3 install -U tensorflow
-
-# workaround to update numba
-RUN rm -rf /opt/conda/lib/python$(python --version | cut -c8-10)/site-packages/llvmlite* && \
-    pip3 install -U numba
-
-# review this on next iteration:
-# torch requires numpy >= 1.20, numba - numpy < 1.21
-# numpy 1.20 is a compromise  for both to work
-RUN pip3 install numpy==1.20.3
-
-# install nodejs and npm
-RUN apt install -y curl && \
-    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
-    apt install -y nodejs
+RUN pip3 install -U einops
 
 # install jupyter and extensions
 WORKDIR /jupyter/config
 WORKDIR /jupyter/secret
-RUN pip3 install -U jupyterlab && \
+RUN pip3 install -U nodejs && \
+    pip3 install -U jupyterlab && \
+    pip3 install -U jupyterlab_execute_time && \
     pip3 install -U nbdime && \
     nbdime extensions --enable
-
-# install docker
-RUN wget https://get.docker.com -q -O /tmp/getdocker && \
-    chmod +x /tmp/getdocker && \
-    sh /tmp/getdocker
 
 # add short alias for gpustat
 RUN echo "alias gtop='gpustat -i 0.2'" >> ~/.bashrc
