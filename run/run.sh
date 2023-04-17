@@ -8,7 +8,7 @@ data_vol=${DS_DATA_DIR:-`pwd`/data}
 config_vol=${DS_CONFIG_DIR:-`pwd`/config}
 secret_vol=${DS_SECRET_DIR:-`pwd`/secret}
 port=${DS_PORT:-8888}
-image=${DS_IMAGE:-analysiscenter1/ds-py3}
+image=${DS_IMAGE:-analysiscenter1/ds-py3:ngc}
 extra_ports=${DS_EXTRA_PORTS:-2}
 
 ports=""
