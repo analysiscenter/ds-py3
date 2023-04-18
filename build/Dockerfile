@@ -72,7 +72,7 @@ RUN pip3 install -U setuptools && \
     pip3 install -U connected-components-3d
 
 # install data manipulation packages
-RUN pip3 install -U numpy && \
+RUN pip3 install numpy==1.23.5 && \
     pip3 install -U zarr && \
     pip3 install -U bottleneck && \
     pip3 install -U numexpr && \
@@ -92,7 +92,7 @@ RUN pip3 install -U numpy && \
 
 # install stats and ML libraries
 RUN pip3 install -U scipy && \
-    pip3 install -U sklearn && \
+    pip3 install -U scikit-learn && \
     pip3 install -U sklearn-pandas && \
     pip3 install -U statsmodels && \
     pip3 install -U nltk && \
