@@ -1,38 +1,46 @@
-FROM nvcr.io/nvidia/pytorch:23.03-py3
+FROM ubuntu:lunar
 LABEL maintainer="Roman Kh <rhudor@gmail.com>"
 
 # required to prevent interactions while installing packages (e.g. software-properties-common)
 ENV DEBIAN_FRONTEND=noninteractive
 
-# install system packages
-RUN apt update && \
-    apt install -y pkg-config software-properties-common build-essential cmake gfortran \
+ARG PYTHON_VERSION=local
+ENV PYTHON_VERSION=${PYTHON_VERSION}
+
+# install dependencies for pyenv
+RUN apt-get update && apt -y dist-upgrade && \
+    apt install -y --no-install-recommends make build-essential libssl-dev zlib1g-dev \
+        libbz2-dev libreadline-dev libsqlite3-dev curl llvm libncurses5-dev \
+        xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
+        mecab-ipadic-utf8 ca-certificates git
+
+ENV PYENV_ROOT /root/.pyenv
+ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
+
+RUN set -ex \
+    && curl https://pyenv.run | bash \
+    && pyenv update \
+    && pyenv install $PYTHON_VERSION \
+    && pyenv install $PYTHON_VERSION_SUB \
+    && pyenv global $PYTHON_VERSION \
+    && pyenv rehash
+
+RUN apt install -y software-properties-common cmake gfortran \
         libboost-dev libboost-system-dev libboost-filesystem-dev \
-        liblapack-dev libatlas-base-dev libopenblas-dev \
-        zlib1g-dev liblzma-dev liblz4-dev libzstd-dev libsnappy-dev zip p7zip-full \
+        liblapack-dev libatlas-base-dev libopenblas-dev zip p7zip-full \
+        zlib1g-dev liblzma-dev liblz4-dev libzstd-dev libsnappy-dev \
         libhdf5-dev libedit-dev libzmq3-dev  libgl1-mesa-glx \
-        wget tmux nano sysstat htop mc tree unzip ca-certificates && \
-    apt install -y git git-lfs && \
-    git lfs install && \
-    pip3 install -U pip && \
-    hash -r pip3
+        wget tmux nano sysstat htop mc tree unzip \
+        libgl1-mesa-glx libglib2.0-0 pkg-config
 
-# update CMake
-RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add - && \
-    apt-add-repository "deb https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" && \
-    apt update && \
-    apt install cmake -y
+RUN pip3 install -U numpy && \
+    pip3 install -U tbb && \
+    pip3 install numba==0.57.0rc1 && \
+    pip3 install torch torchvision
 
-# install russian locale
-RUN apt install -y language-pack-ru && \
-    echo ru_RU.UTF8 >> /var/lib/locales/supported.d/local && \
-    echo ru_RU.UTF-8 UTF-8 >> /var/lib/locales/supported.d/local
-
-ENV LC_CTYPE=ru_RU.UTF-8
-ENV PIP_NO_CACHE_DIR=true
-
-# install python packages
-RUN pip3 install -U setuptools && \
+RUN pip3 install -U pip && \
+    pip3 install -U poetry && \
+    pip3 install -U setuptools && \
     apt install -y python3-venv && \
     pip3 install -U virtualenv && \
     pip3 install -U pipenv && \
@@ -52,8 +60,6 @@ RUN pip3 install -U setuptools && \
     pip3 install -U requests && \
     pip3 install -U multiprocess && \
     pip3 install -U psutil && \
-    pip3 install -U tbb && \
-    pip3 install -U numba && \
     pip3 install -U eventlet && \
     pip3 install -U greenlet && \
     pip3 install -U aiohttp && \
@@ -72,8 +78,8 @@ RUN pip3 install -U setuptools && \
     pip3 install -U connected-components-3d
 
 # install data manipulation packages
-RUN pip3 install numpy==1.23.5 && \
-    pip3 install -U zarr && \
+RUN pip3 install -U zarr && \
+    pip3 install -U lmdb && \
     pip3 install -U bottleneck && \
     pip3 install -U numexpr && \
     pip3 install -U tables && \
@@ -87,8 +93,7 @@ RUN pip3 install numpy==1.23.5 && \
     pip3 install -U pint && \
     pip3 install -U python-dateutil && \
     pip3 install -U 'dvc[ssh]' && \
-    # Update existing CUDA-specific cupy library
-    pip3 install -U  $(pip3 list | grep cupy* | awk '{print $1}')
+    pip3 install -U cupy-cuda$(python3 -c 'import torch; print(torch.version.cuda)' | cut -c 1,2)x
 
 # install stats and ML libraries
 RUN pip3 install -U scipy && \
@@ -97,7 +102,7 @@ RUN pip3 install -U scipy && \
     pip3 install -U statsmodels && \
     pip3 install -U nltk && \
     pip3 install -U xgboost && \
-    pip3 install -U catboost && \
+    pip3 install -U catboost-dev[widget]==1.2rc0 && \
     pip3 install -U lightgbm
 
 # install image libraries
@@ -123,14 +128,13 @@ RUN pip3 install -U PyWavelets && \
     pip3 install -U sphinx && \
     pip3 install -U gpustat && \
     pip3 install -U py-nbtools && \
-    pip3 install -U batchflow
+    pip3 install -U batchflow && \
+    pip3 install -U segfast
 
 # install deep learning libraries
 RUN pip3 install -U einops
 
 # install jupyter and extensions
-WORKDIR /jupyter/config
-WORKDIR /jupyter/secret
 RUN pip3 install -U nodejs && \
     pip3 install -U jupyterlab && \
     pip3 install -U jupyterlab_execute_time && \
