@@ -21,7 +21,6 @@ RUN set -ex \
     && curl https://pyenv.run | bash \
     && pyenv update \
     && pyenv install $PYTHON_VERSION \
-    && pyenv install $PYTHON_VERSION_SUB \
     && pyenv global $PYTHON_VERSION \
     && pyenv rehash
 
