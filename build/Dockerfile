@@ -29,8 +29,8 @@ RUN apt install -y software-properties-common cmake gfortran \
         liblapack-dev libatlas-base-dev libopenblas-dev zip p7zip-full \
         zlib1g-dev liblzma-dev liblz4-dev libzstd-dev libsnappy-dev \
         libhdf5-dev libedit-dev libzmq3-dev  libgl1-mesa-glx \
-        wget tmux nano sysstat htop mc tree unzip \
-        libgl1-mesa-glx libglib2.0-0 pkg-config
+        wget tmux nano sysstat htop mc tree unzip rsync \
+        libgl1-mesa-glx libglib2.0-0 pkg-config openssh-client
 
 RUN pip3 install -U numpy && \
     pip3 install -U tbb && \
@@ -143,6 +143,7 @@ RUN pip3 install -U nodejs && \
 # add short alias for gpustat
 RUN echo "alias gtop='gpustat -i 0.2'" >> ~/.bashrc
 
+COPY htoprc /root/.config/htop/htoprc
 COPY start-notebook.sh /usr/local/bin/start-notebook.sh
 
 WORKDIR /notebooks
